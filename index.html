@@ -425,6 +425,39 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
   /* Remove 300ms tap delay on ALL interactive elements */
   button,a,.link-btn,.edit-toggle,.login-hint,.tab-btn,.tog,.react-btn,.icon-pill{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 }
+
+/* ── Twitch Clip Card ─────────────────────────── */
+#clipCard{display:none;width:100%;max-width:520px;background:rgba(145,70,255,.06);border:1px solid rgba(145,70,255,.2);border-radius:16px;overflow:hidden;margin-bottom:14px;position:relative;z-index:1;}
+#clipCard.show{display:block;}
+.clip-header{display:flex;align-items:center;gap:8px;padding:10px 14px 6px;font-size:.75rem;font-weight:700;color:#9146ff;}
+.clip-thumb{position:relative;width:100%;aspect-ratio:16/9;background:#0d0d1a;cursor:pointer;overflow:hidden;}
+.clip-thumb img{width:100%;height:100%;object-fit:cover;transition:opacity .3s;}
+.clip-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);}
+.clip-play-btn{width:52px;height:52px;border-radius:50%;background:rgba(145,70,255,.9);display:flex;align-items:center;justify-content:center;transition:transform .2s;}
+.clip-thumb:hover .clip-play-btn{transform:scale(1.1);}
+.clip-iframe{display:none;width:100%;aspect-ratio:16/9;border:none;}
+.clip-info{padding:8px 14px 12px;}
+.clip-title{font-size:.8rem;font-weight:700;color:#e8eaf0;margin-bottom:3px;}
+.clip-meta{font-size:.72rem;color:var(--muted);}
+
+/* ── Gaming Stats ─────────────────────────────── */
+#statsCard{display:none;width:100%;max-width:520px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:14px 16px;margin-bottom:14px;position:relative;z-index:1;}
+#statsCard.show{display:block;}
+.stats-title{font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.stat-item{background:rgba(255,255,255,.04);border-radius:10px;padding:10px 8px;text-align:center;}
+.stat-value{font-size:1.2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;}
+.stat-label{font-size:.68rem;color:var(--muted);margin-top:2px;}
+
+/* ── Countdown Timer ──────────────────────────── */
+#countdownCard{display:none;width:100%;max-width:520px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.15);border-radius:16px;padding:14px 16px;margin-bottom:14px;position:relative;z-index:1;}
+#countdownCard.show{display:block;}
+.cd-label{font-size:.78rem;font-weight:700;color:#e8eaf0;margin-bottom:10px;text-align:center;}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.cd-unit{background:rgba(0,0,0,.2);border-radius:10px;padding:10px 6px;text-align:center;}
+.cd-num{font-size:1.4rem;font-weight:800;color:var(--accent);display:block;font-variant-numeric:tabular-nums;}
+.cd-text{font-size:.65rem;color:var(--muted);margin-top:2px;}
+.cd-finished{text-align:center;font-size:.85rem;color:var(--accent);font-weight:700;padding:4px 0;}
 </style>
 </head>
 <body>
@@ -483,6 +516,31 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
   <div class="ms-labels">
     <span id="msPercent">0%</span>
     <span id="msEmoji">&#127942; Ziel erreichen!</span>
+  </div>
+</div>
+<div id="clipCard">
+  <div class="clip-header">&#127918; CLIP DER WOCHE</div>
+  <div class="clip-thumb" id="clipThumb" onclick="playClip()">
+    <img id="clipImg" src="" alt="Clip">
+    <div class="clip-play"><div class="clip-play-btn">&#9654;</div></div>
+  </div>
+  <iframe id="clipFrame" class="clip-iframe" allowfullscreen></iframe>
+  <div class="clip-info">
+    <div class="clip-title" id="clipTitle">Clip wird geladen...</div>
+    <div class="clip-meta" id="clipMeta"></div>
+  </div>
+</div>
+<div id="statsCard">
+  <div class="stats-title">&#128202; Gaming Stats</div>
+  <div class="stats-grid" id="statsGrid"></div>
+</div>
+<div id="countdownCard">
+  <div class="cd-label" id="cdLabel">&#128338; N&auml;chster Stream</div>
+  <div class="cd-grid" id="cdGrid">
+    <div class="cd-unit"><span class="cd-num" id="cdDays">00</span><div class="cd-text">Tage</div></div>
+    <div class="cd-unit"><span class="cd-num" id="cdHours">00</span><div class="cd-text">Stunden</div></div>
+    <div class="cd-unit"><span class="cd-num" id="cdMins">00</span><div class="cd-text">Minuten</div></div>
+    <div class="cd-unit"><span class="cd-num" id="cdSecs">00</span><div class="cd-text">Sekunden</div></div>
   </div>
 </div>
 <div id="recordBadge"><span style="font-size:.85rem">&#9733;</span> Rekord: <span id="recordCount">0</span> gleichzeitig</div>
@@ -682,7 +740,48 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     </div>
     <div class="edit-section">
       <div class="sec-title">&#127925; Spotify Now Playing</div>
-            <!-- Twitch Live Status -->
+            <!-- Twitch Clip der Woche -->
+      <div class="edit-section">
+        <div class="sec-title">&#127918; Clip der Woche</div>
+        <div class="tog-row"><div class="tog-row-lbl">Clip anzeigen<small>Zeigt einen Twitch Clip auf deiner Seite</small></div><label class="tog"><input type="checkbox" id="clipEnabled"><span class="tog-sl"></span></label></div>
+        <label class="lbl">Clip URL (Twitch Clip Link)</label>
+        <input class="inp" id="clipUrl" placeholder="https://clips.twitch.tv/...">
+        <label class="lbl">Clip Titel</label>
+        <input class="inp" id="clipTitle" placeholder="Mein bester Clip!">
+        <label class="lbl">Thumbnail URL (optional)</label>
+        <input class="inp" id="clipThumbUrl" placeholder="https://...">
+      </div>
+      <!-- Gaming Stats -->
+      <div class="edit-section">
+        <div class="sec-title">&#128202; Gaming Stats</div>
+        <div class="tog-row"><div class="tog-row-lbl">Stats anzeigen<small>Bis zu 6 eigene Statistiken</small></div><label class="tog"><input type="checkbox" id="statsEnabled"><span class="tog-sl"></span></label></div>
+        <div id="statsInputs">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+            <input class="inp" id="stat1val" placeholder="Wert (z.B. 1337)" style="margin:0">
+            <input class="inp" id="stat1lbl" placeholder="Label (z.B. Wins)" style="margin:0">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+            <input class="inp" id="stat2val" placeholder="Wert (z.B. 500h)" style="margin:0">
+            <input class="inp" id="stat2lbl" placeholder="Label (z.B. Stunden)" style="margin:0">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <input class="inp" id="stat3val" placeholder="Wert (z.B. 2.4)" style="margin:0">
+            <input class="inp" id="stat3lbl" placeholder="Label (z.B. K/D)" style="margin:0">
+          </div>
+        </div>
+      </div>
+      <!-- Countdown Timer -->
+      <div class="edit-section">
+        <div class="sec-title">&#9200; Countdown Timer</div>
+        <div class="tog-row"><div class="tog-row-lbl">Countdown anzeigen<small>Z&auml;hlt bis zu einem Datum/Uhrzeit</small></div><label class="tog"><input type="checkbox" id="countdownEnabled"><span class="tog-sl"></span></label></div>
+        <label class="lbl">Beschriftung (z.B. "N&auml;chster Stream")</label>
+        <input class="inp" id="countdownLabel" placeholder="N&auml;chster Stream">
+        <label class="lbl">Datum &amp; Uhrzeit</label>
+        <input class="inp" id="countdownDate" type="datetime-local">
+        <label class="lbl">Nachricht wenn Countdown abgelaufen</label>
+        <input class="inp" id="countdownDone" placeholder="&#127881; Es ist soweit!">
+      </div>
+      <!-- Twitch Live Status -->
       <div class="edit-section">
         <div class="sec-title">&#127918; Twitch Live Status</div>
         <div class="tog-row"><div class="tog-row-lbl">Live-Karte anzeigen<small>Zeigt automatisch wenn du live bist</small></div><label class="tog"><input type="checkbox" id="twitchEnabled"><span class="tog-sl"></span></label></div>
@@ -814,7 +913,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
           <div>
             <div style="font-size:.78rem;color:var(--muted)">Aktuelle Version</div>
-            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.2.0</div>
+            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.3.0</div>
           </div>
           <button class="sec-btn" id="checkUpdateBtn" onclick="checkUpdate()" style="margin:0;padding:8px 14px;font-size:.78rem">
             &#128270; Nach Updates suchen
@@ -973,6 +1072,21 @@ async function loadIntoEdit(s){
   document.getElementById('announceEnabled').checked=!!p.announce_enabled;
   document.getElementById('announceText2').value=p.announce_text||'';
   document.getElementById('announceStyle').value=p.announce_style||'accent';
+  // Clip
+  document.getElementById('clipEnabled').checked=!!p.clip_enabled;
+  document.getElementById('clipUrl').value=p.clip_url||'';
+  document.getElementById('clipTitle').value=p.clip_title||'';
+  document.getElementById('clipThumbUrl').value=p.clip_thumb_url||'';
+  // Stats
+  document.getElementById('statsEnabled').checked=!!p.stats_enabled;
+  const sv=p.stats_values?JSON.parse(p.stats_values):[];
+  ['stat1val','stat2val','stat3val'].forEach((id,i)=>document.getElementById(id).value=sv[i]?sv[i][0]:'');
+  ['stat1lbl','stat2lbl','stat3lbl'].forEach((id,i)=>document.getElementById(id).value=sv[i]?sv[i][1]:'');
+  // Countdown
+  document.getElementById('countdownEnabled').checked=!!p.countdown_enabled;
+  document.getElementById('countdownLabel').value=p.countdown_label||'Nächster Stream';
+  document.getElementById('countdownDate').value=p.countdown_date||'';
+  document.getElementById('countdownDone').value=p.countdown_done||'Es ist soweit!';
   document.getElementById('twitchEnabled').checked=!!p.twitch_enabled;
   document.getElementById('twitchUsername').value=p.twitch_username||'';
   document.getElementById('twitchClientId').value=p.twitch_client_id||'';
@@ -1054,6 +1168,34 @@ async function saveAll(){
     announce_enabled:document.getElementById('announceEnabled').checked?1:0,
     announce_text:document.getElementById('announceText2').value,
     announce_style:document.getElementById('announceStyle').value,
+    clip_enabled:document.getElementById('clipEnabled').checked?1:0,
+    clip_url:document.getElementById('clipUrl').value,
+    clip_title:document.getElementById('clipTitle').value,
+    clip_thumb_url:document.getElementById('clipThumbUrl').value,
+    stats_enabled:document.getElementById('statsEnabled').checked?1:0,
+    stats_values:JSON.stringify([
+      [document.getElementById('stat1val').value,document.getElementById('stat1lbl').value],
+      [document.getElementById('stat2val').value,document.getElementById('stat2lbl').value],
+      [document.getElementById('stat3val').value,document.getElementById('stat3lbl').value],
+    ].filter(s=>s[0]&&s[1])),
+    countdown_enabled:document.getElementById('countdownEnabled').checked?1:0,
+    countdown_label:document.getElementById('countdownLabel').value,
+    countdown_date:document.getElementById('countdownDate').value,
+    countdown_done:document.getElementById('countdownDone').value,
+    clip_enabled:document.getElementById('clipEnabled').checked?1:0,
+    clip_url:document.getElementById('clipUrl').value,
+    clip_title:document.getElementById('clipTitle').value,
+    clip_thumb_url:document.getElementById('clipThumbUrl').value,
+    stats_enabled:document.getElementById('statsEnabled').checked?1:0,
+    stats_values:JSON.stringify([
+      [document.getElementById('stat1val').value,document.getElementById('stat1lbl').value],
+      [document.getElementById('stat2val').value,document.getElementById('stat2lbl').value],
+      [document.getElementById('stat3val').value,document.getElementById('stat3lbl').value],
+    ].filter(s=>s[0]&&s[1])),
+    countdown_enabled:document.getElementById('countdownEnabled').checked?1:0,
+    countdown_label:document.getElementById('countdownLabel').value,
+    countdown_date:document.getElementById('countdownDate').value,
+    countdown_done:document.getElementById('countdownDone').value,
     twitch_enabled:document.getElementById('twitchEnabled').checked?1:0,
     twitch_username:document.getElementById('twitchUsername').value,
     twitch_client_id:document.getElementById('twitchClientId').value,
@@ -1244,6 +1386,9 @@ function render(data){
   else{const el=document.getElementById('announceBanner');if(el)el.classList.remove('show');}
   // Spotify
   // Twitch Live Status
+  if(data.clipEnabled&&data.clipUrl){showClip(data);}
+  if(data.statsEnabled&&data.statsValues){showStats(data.statsValues);}
+  if(data.countdownEnabled&&data.countdownDate){startCountdown(data);}
   if(data.twitchEnabled&&data.twitchUsername){checkTwitchLive(slug);}
   // Milestone
   if(data.milestoneEnabled){showMilestone(data);}
@@ -1824,6 +1969,88 @@ function showMilestone(data){
   card.classList.add('show');
 }
 
+
+// ── Twitch Clip der Woche ────────────────────────
+function showClip(data){
+  const card=document.getElementById('clipCard');
+  if(!card||!data.clipUrl)return;
+  const img=document.getElementById('clipImg');
+  const title=document.getElementById('clipTitle');
+  const meta=document.getElementById('clipMeta');
+  if(img)img.src=data.clipThumbUrl||'';
+  if(title)title.textContent=data.clipTitle||'Clip ansehen';
+  if(meta)meta.textContent='Twitch Clip &#9654;';
+  card.classList.add('show');
+  // Store URL for playClip()
+  card.dataset.url=data.clipUrl;
+}
+function playClip(){
+  const card=document.getElementById('clipCard');
+  if(!card)return;
+  const url=card.dataset.url||'';
+  // Convert clip URL to embed
+  let embedUrl='';
+  const m=url.match(/clips\.twitch\.tv\/([^?&/]+)/);
+  const m2=url.match(/twitch\.tv\/\w+\/clip\/([^?&/]+)/);
+  const slug=m?m[1]:m2?m2[1]:'';
+  if(slug)embedUrl=`https://clips.twitch.tv/embed?clip=${slug}&parent=${location.hostname}&autoplay=true`;
+  if(!embedUrl)return window.open(url,'_blank');
+  const thumb=document.getElementById('clipThumb');
+  const frame=document.getElementById('clipFrame');
+  if(thumb)thumb.style.display='none';
+  if(frame){frame.src=embedUrl;frame.style.display='block';}
+}
+
+// ── Gaming Stats ─────────────────────────────────
+function showStats(vals){
+  const card=document.getElementById('statsCard');
+  const grid=document.getElementById('statsGrid');
+  if(!card||!grid)return;
+  let parsed=[];
+  try{parsed=typeof vals==='string'?JSON.parse(vals):vals;}catch(e){return;}
+  if(!parsed||!parsed.length)return;
+  grid.innerHTML=parsed.map(s=>`
+    <div class="stat-item">
+      <span class="stat-value">${s[0]||''}</span>
+      <div class="stat-label">${s[1]||''}</div>
+    </div>`).join('');
+  card.classList.add('show');
+}
+
+// ── Countdown Timer ───────────────────────────────
+function startCountdown(data){
+  const card=document.getElementById('countdownCard');
+  if(!card||!data.countdownDate)return;
+  const label=document.getElementById('cdLabel');
+  if(label)label.textContent=data.countdownLabel||'Nächster Stream';
+  const target=new Date(data.countdownDate).getTime();
+  card.classList.add('show');
+  function tick(){
+    const now=Date.now();
+    const diff=target-now;
+    if(diff<=0){
+      const grid=document.getElementById('cdGrid');
+      if(grid)grid.innerHTML=`<div class="cd-finished">${data.countdownDone||'Es ist soweit!'}</div>`;
+      return;
+    }
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    const pad=n=>String(n).padStart(2,'0');
+    const days=document.getElementById('cdDays');
+    const hours=document.getElementById('cdHours');
+    const mins=document.getElementById('cdMins');
+    const secs=document.getElementById('cdSecs');
+    if(days)days.textContent=pad(d);
+    if(hours)hours.textContent=pad(h);
+    if(mins)mins.textContent=pad(m);
+    if(secs)secs.textContent=pad(s);
+    setTimeout(tick,1000);
+  }
+  tick();
+}
+
 async function checkUpdate(){
   const btn=document.getElementById('checkUpdateBtn');
   const res=document.getElementById('updateResult');
@@ -1871,8 +2098,17 @@ async function checkUpdate(){
 async function doUpdate(){
   const btn=document.getElementById('installBtn');
   if(!btn)return;
-  btn.textContent='&#9203; Installiere...';btn.disabled=true;
-  const r=await api('do_update',{csrf:csrfToken});
+  btn.innerHTML='Installiere...';btn.disabled=true;
+  // 60 second timeout
+  const updatePromise=api('do_update',{csrf:csrfToken});
+  const timeoutPromise=new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),60000));
+  let r;
+  try{r=await Promise.race([updatePromise,timeoutPromise]);}
+  catch(e){
+    btn.innerHTML='Jetzt installieren';btn.disabled=false;
+    document.getElementById('updateResult').innerHTML+=`<div class="info-box" style="color:var(--danger);margin-top:8px">&#10060; Timeout - GitHub zu langsam. Bitte nochmal versuchen.</div>`;
+    return;
+  }
   if(!r||!r.ok){
     btn.textContent='&#11015; Jetzt installieren';btn.disabled=false;
     document.getElementById('updateResult').innerHTML+=`<div class="info-box" style="color:var(--danger);margin-top:8px">&#10060; ${r?.msg||'Update fehlgeschlagen'}</div>`;
