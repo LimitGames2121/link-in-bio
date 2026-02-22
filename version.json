@@ -1,9 +1,11 @@
 {
-  "version": "9.3.1",
+  "version": "9.4.0",
   "date": "2026-02-22",
   "changelog": [
-    "FIX: Update-Button CSRF Token Fehler behoben",
-    "FIX: Installieren-Button haengt nicht mehr",
-    "FIX: Session Timeout beim Update erhoet"
+    "NEU: YouTube Video Feed (letzte Videos automatisch)",
+    "NEU: PWA - Seite als App installierbar",
+    "NEU: Link Suche im Admin",
+    "NEU: Link Sortierung (Klicks, Name, Datum)",
+    "FIX: Update-Button funktioniert zuverlaessig"
   ]
 }
