@@ -1,11 +1,11 @@
 {
-  "version": "9.2.0",
+  "version": "9.3.0",
   "date": "2026-02-22",
   "changelog": [
-    "NEU: Update-System via cURL (Hetzner-kompatibel)",
-    "NEU: Twitch Live Status Karte",
-    "NEU: Milestone Fortschrittsbalken",
-    "FIX: Emoji-Darstellung komplett behoben",
-    "FIX: Button-Text Darstellung korrigiert"
+    "NEU: Twitch Clip der Woche mit eingebettetem Player",
+    "NEU: Gaming Stats (bis zu 3 eigene Statistiken)",
+    "NEU: Countdown Timer bis zum naechsten Event",
+    "FIX: Update-Button haengt nicht mehr",
+    "FIX: Installieren-Button Text korrigiert"
   ]
 }
