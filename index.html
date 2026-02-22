@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Link in Bio</title>
 <meta property="og:title" content="Link in Bio">
-<meta property="og:description" content="Kreativstudio · Content · Medienproduktion">
+<meta property="og:description" content="Kreativstudio &middot; Content &middot; Medienproduktion">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" id="pwaManifest" href="">
-<link rel="icon" id="faviconEl" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="icon" id="faviconEl" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127916;</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&family=Inter:wght@300;400;600&family=Raleway:wght@300;400;700&family=Space+Grotesk:wght@300;400;700&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#07090e;--card:rgba(255,255,255,.05);--card-hover:rgba(255,255,255,.09);--border:rgba(255,255,255,.08);--accent:#00e5ff;--accent2:#7b5cff;--text:#e8eaf0;--muted:#606474;--danger:#ff4444;--success:#00c896;--font:'DM Sans',Arial,sans-serif;}
@@ -92,6 +92,23 @@ body.no-custom-cursor #customCursor,body.no-custom-cursor #cursorRing{display:no
 @keyframes spBar{0%,100%{height:4px}50%{height:14px}}
 /* RECORD BADGE */
 #recordBadge{display:none;align-items:center;gap:6px;background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.2);border-radius:50px;padding:5px 14px;font-size:.75rem;font-weight:700;color:#ffcc00;margin-bottom:12px;position:relative;z-index:1;}
+#twitchLive{display:none;align-items:center;gap:10px;background:rgba(145,70,255,.08);border:1px solid rgba(145,70,255,.25);border-radius:14px;padding:10px 16px;margin-bottom:14px;position:relative;z-index:1;width:100%;max-width:520px;}
+#twitchLive.show{display:flex;}
+.live-dot{width:10px;height:10px;border-radius:50%;background:#ff4040;flex-shrink:0;animation:livePulse 1.2s infinite;}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,64,64,.5);}50%{opacity:.7;box-shadow:0 0 0 6px rgba(255,64,64,0);}}
+.live-badge-pill{background:#ff4040;color:#fff;font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.05em;flex-shrink:0;}
+.live-info{flex:1;min-width:0;}
+.live-title{font-size:.78rem;font-weight:700;color:#e8eaf0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.live-game{font-size:.72rem;color:#9146ff;margin-top:1px;}
+.live-viewers{font-size:.72rem;color:var(--muted);margin-left:auto;flex-shrink:0;text-align:right;}
+#milestoneCard{display:none;width:100%;max-width:520px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px 16px;margin-bottom:14px;position:relative;z-index:1;}
+#milestoneCard.show{display:block;}
+.ms-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.ms-title-text{font-size:.8rem;font-weight:700;color:#e8eaf0;}
+.ms-count{font-size:.78rem;font-weight:700;color:var(--accent);}
+.ms-bar-bg{width:100%;height:8px;background:rgba(255,255,255,.06);border-radius:50px;overflow:hidden;}
+.ms-bar{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0%;}
+.ms-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:.7rem;color:var(--muted);}
 #recordBadge.show{display:flex;}
 /* 3D TILT */
 .link-btn{transform-style:preserve-3d;will-change:transform;}
@@ -416,41 +433,61 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
   <div class="splash-bar"><div class="splash-fill" id="splashFill"></div></div>
   <div class="splash-sub" id="splashSub">LÄDT...</div>
 </div>
-<div id="webhookPing" class="webhook-ping">📨 Discord benachrichtigt</div>
+<div id="webhookPing" class="webhook-ping">&#128232; Discord benachrichtigt</div>
 <div id="linkPreview" class="link-preview"><span class="link-preview-dot"></span><span id="linkPreviewUrl"></span></div>
-<div id="sessionWarn"><span>⚠️ Deine Session läuft in <span id="sessCountdown">5:00</span> ab</span><button onclick="renewSession()">Verlängern</button></div>
+<div id="sessionWarn"><span>&#9888; Deine Session läuft in <span id="sessCountdown">5:00</span> ab</span><button onclick="renewSession()">Verlängern</button></div>
 <canvas id="particleCanvas"></canvas>
 <canvas id="cursorCanvas"></canvas>
 <div id="bgLayer"></div>
-<button id="langToggle" onclick="toggleLang()">🌐 EN</button>
+<button id="langToggle" onclick="toggleLang()">&#127760; EN</button>
 <div id="customCursor"></div>
 <div id="cursorRing"></div>
 <canvas id="confettiCanvas"></canvas>
 <div id="easterEgg">
-  <button class="ee-close" onclick="closeEasterEgg()">✕</button>
+  <button class="ee-close" onclick="closeEasterEgg()">&#10005;</button>
   <div id="eeContent"></div>
 </div>
-<div id="cookieBanner"><div class="ck-txt" id="ckText">Diese Seite verwendet keine Tracking-Cookies.</div><button class="ck-dec" onclick="decCookies()">Ablehnen</button><button class="ck-acc" onclick="accCookies()">Verstanden ✓</button></div>
-<div id="maintPage"><div class="mglow"></div><div class="mlogo" id="maintLogo"><span id="maintName1"></span><span id="maintName2"></span></div><div class="micon">⚙️</div><h1 class="mtitle">Kurz in der <span>Wartung</span></h1><p class="msub" id="maintMsg"></p><div class="mbadge"><div class="mdot"></div>Wartungsarbeiten laufen</div></div>
-<div class="madmin" id="maintAdminHint" onclick="openLogin()">⚙ Admin</div>
+<div id="cookieBanner"><div class="ck-txt" id="ckText">Diese Seite verwendet keine Tracking-Cookies.</div><button class="ck-dec" onclick="decCookies()">Ablehnen</button><button class="ck-acc" onclick="accCookies()">Verstanden &#10003;</button></div>
+<div id="maintPage"><div class="mglow"></div><div class="mlogo" id="maintLogo"><span id="maintName1"></span><span id="maintName2"></span></div><div class="micon">&#9881;</div><h1 class="mtitle">Kurz in der <span>Wartung</span></h1><p class="msub" id="maintMsg"></p><div class="mbadge"><div class="mdot"></div>Wartungsarbeiten laufen</div></div>
+<div class="madmin" id="maintAdminHint" onclick="openLogin()">&#9881; Admin</div>
 <div class="wrapper" id="mainContent">
   <div id="announceBanner">
-    <span id="announceIcon">📢</span>
+    <span id="announceIcon">&#128226;</span>
     <span id="announceText"></span>
-    <button class="ann-close" onclick="closeAnnounce()">✕</button>
+    <button class="ann-close" onclick="closeAnnounce()">&#10005;</button>
   </div>
   <div id="spotifyCard">
     <img id="spotifyAlbum" src="" alt="Album">
     <div class="sp-info">
-      <div class="sp-badge"><span>●</span> GERADE GEHÖRT</div>
-      <div class="sp-track" id="spTrack">—</div>
-      <div class="sp-artist" id="spArtist">—</div>
+      <div class="sp-badge"><span>&#9679;</span> GERADE GEHÖRT</div>
+      <div class="sp-track" id="spTrack">&mdash;</div>
+      <div class="sp-artist" id="spArtist">&mdash;</div>
     </div>
     <div class="sp-bars"><div class="sp-bar"></div><div class="sp-bar"></div><div class="sp-bar"></div><div class="sp-bar"></div></div>
   </div>
-  <div id="recordBadge"><span style="font-size:.85rem">★</span> Rekord: <span id="recordCount">0</span> gleichzeitig</div>
+  <div id="twitchLive">
+  <div class="live-dot"></div>
+  <span class="live-badge-pill">LIVE</span>
+  <div class="live-info">
+    <div class="live-title" id="liveTitle">Stream l&#228;uft...</div>
+    <div class="live-game" id="liveGame">Twitch</div>
+  </div>
+  <div class="live-viewers"><span id="liveViewers">0</span><br><span style="font-size:.65rem">Zuschauer</span></div>
+</div>
+<div id="milestoneCard">
+  <div class="ms-header">
+    <span class="ms-title-text" id="msTitle">Ziel: 1000 Follower</span>
+    <span class="ms-count"><span id="msCurrent">0</span>&nbsp;/&nbsp;<span id="msTarget">1000</span></span>
+  </div>
+  <div class="ms-bar-bg"><div class="ms-bar" id="msBar"></div></div>
+  <div class="ms-labels">
+    <span id="msPercent">0%</span>
+    <span id="msEmoji">&#127942; Ziel erreichen!</span>
+  </div>
+</div>
+<div id="recordBadge"><span style="font-size:.85rem">&#9733;</span> Rekord: <span id="recordCount">0</span> gleichzeitig</div>
   <div class="profile-switcher" id="profileSwitcher"></div>
-  <div class="avatar-wrap"><div class="avatar-ring" id="avatarRing"></div><div class="avatar-inner" id="avatarInner"><span>🎬</span></div></div>
+  <div class="avatar-wrap"><div class="avatar-ring" id="avatarRing"></div><div class="avatar-inner" id="avatarInner"><span>&#127916;</span></div></div>
   <img class="site-logo" id="siteLogo" src="" alt="">
   <div class="name" id="displayName"></div>
   <div class="bio" id="displayBio"></div>
@@ -463,10 +500,10 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
   <!-- Legal Modal -->
 <div id="legalModal" style="position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;">
   <div style="background:#0d1020;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:2rem;max-width:600px;width:calc(100% - 32px);max-height:85vh;overflow-y:auto;position:relative;">
-    <button onclick="closeLegal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:none;border-radius:8px;color:#8a9ab8;width:32px;height:32px;font-size:1rem;cursor:pointer;">✕</button>
+    <button onclick="closeLegal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.06);border:none;border-radius:8px;color:#8a9ab8;width:32px;height:32px;font-size:1rem;cursor:pointer;">&#10005;</button>
     <div style="display:flex;gap:8px;margin-bottom:1.5rem;">
-      <button class="legal-tab active" onclick="switchLegal('impressum',this)" style="background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25);border-radius:8px;padding:7px 16px;font-size:.8rem;cursor:pointer;color:var(--accent);font-family:var(--font);">⚖️ Impressum</button>
-      <button class="legal-tab" onclick="switchLegal('datenschutz',this)" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 16px;font-size:.8rem;cursor:pointer;color:#8a9ab8;font-family:var(--font);">🔒 Datenschutz</button>
+      <button class="legal-tab active" onclick="switchLegal('impressum',this)" style="background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25);border-radius:8px;padding:7px 16px;font-size:.8rem;cursor:pointer;color:var(--accent);font-family:var(--font);">&#9878; Impressum</button>
+      <button class="legal-tab" onclick="switchLegal('datenschutz',this)" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 16px;font-size:.8rem;cursor:pointer;color:#8a9ab8;font-family:var(--font);">&#128274; Datenschutz</button>
     </div>
     <div id="legalContent" style="font-size:.85rem;color:#8a9ab8;line-height:1.75;"></div>
   </div>
@@ -478,46 +515,46 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
 </div>
 
 </div>
-<button id="soundBtn" onclick="toggleSound()">♪ Musik</button>
-<div class="login-hint" id="loginHint" onclick="openLogin()">⚙ Admin Login</div>
+<button id="soundBtn" onclick="toggleSound()">&#9834; Musik</button>
+<div class="login-hint" id="loginHint" onclick="openLogin()">&#9881; Admin Login</div>
 <button class="edit-toggle" id="editToggle" onclick="openEdit()">&#9998; Bearbeiten</button>
 <!-- Password Reset Modal -->
 <div class="overlay" id="resetModal"><div class="login-box">
   <div class="login-logo" id="resetLogo"><span id="resetName"></span></div>
   <div style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">Neues Passwort setzen</div>
   <div class="err-box" id="resetErr"></div>
-  <div class="field"><label>Neues Passwort</label><input type="password" id="resetPw" placeholder="Min. 8 Zeichen"><span class="eye" onclick="toggleVis('resetPw',this)">👁</span></div>
-  <div class="field"><label>Bestätigen</label><input type="password" id="resetPw2" placeholder="••••••••"></div>
-  <button class="act-btn" onclick="doReset()">Passwort speichern →</button>
+  <div class="field"><label>Neues Passwort</label><input type="password" id="resetPw" placeholder="Min. 8 Zeichen"><span class="eye" onclick="toggleVis('resetPw',this)">&#128065;</span></div>
+  <div class="field"><label>Bestätigen</label><input type="password" id="resetPw2" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
+  <button class="act-btn" onclick="doReset()">Passwort speichern &#8594;</button>
 </div></div>
 <!-- Unlock Modal -->
-<div class="unlock-modal" id="unlockModal"><div class="modal-box"><h3>🔒 Geschützter Link</h3><p id="unlockName">Passwortgeschützt.</p><div class="err-box" id="unlockErr"></div><div class="field"><label>Code eingeben</label><input type="password" id="unlockCode" placeholder="••••••" onkeydown="if(event.key==='Enter')doUnlock()"></div><button class="act-btn" onclick="doUnlock()">Link öffnen →</button><div style="margin-top:10px"><button onclick="closeUnlock()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:var(--font)">Abbrechen</button></div></div></div>
+<div class="unlock-modal" id="unlockModal"><div class="modal-box"><h3>&#128274; Geschützter Link</h3><p id="unlockName">Passwortgeschützt.</p><div class="err-box" id="unlockErr"></div><div class="field"><label>Code eingeben</label><input type="password" id="unlockCode" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" onkeydown="if(event.key==='Enter')doUnlock()"></div><button class="act-btn" onclick="doUnlock()">Link öffnen &#8594;</button><div style="margin-top:10px"><button onclick="closeUnlock()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:var(--font)">Abbrechen</button></div></div></div>
 <!-- Login -->
 <div class="overlay" id="loginOverlay"><div class="login-box" id="loginBox">
   <div class="login-logo" id="loginLogo2"><span id="loginName3"></span><span id="loginName4" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;padding:0 2px;">Media</span></div>
   <div style="color:var(--muted);font-size:.85rem;margin-bottom:2rem">Admin-Bereich</div>
   <div class="err-box" id="loginErr"></div>
-  <div id="pwStep"><div class="field"><label>Passwort</label><input type="password" id="loginPw" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"><span class="eye" onclick="toggleVis('loginPw',this)">👁</span></div><input type="text" id="loginUsername" name="username" autocomplete="username" value="admin" style="display:none;position:absolute;left:-9999px" tabindex="-1"><input type="text" id="hp_website" name="website" autocomplete="off" style="display:none;position:absolute;left:-9999px" tabindex="-1">
-  <button class="act-btn" id="loginBtn" onclick="doLogin()">Anmelden →</button><div id="attInfo" style="color:var(--muted);font-size:.75rem;margin-top:8px"></div></div>
-  <div class="totp-box" id="totpStep"><div style="font-size:1.5rem;margin-bottom:8px">🔐</div><div style="font-weight:700;margin-bottom:4px">Zwei-Faktor-Code</div><div style="color:var(--muted);font-size:.84rem;margin-bottom:16px">Code aus Authenticator App eingeben</div>
+  <div id="pwStep"><div class="field"><label>Passwort</label><input type="password" id="loginPw" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"><span class="eye" onclick="toggleVis('loginPw',this)">&#128065;</span></div><input type="text" id="loginUsername" name="username" autocomplete="username" value="admin" style="display:none;position:absolute;left:-9999px" tabindex="-1"><input type="text" id="hp_website" name="website" autocomplete="off" style="display:none;position:absolute;left:-9999px" tabindex="-1">
+  <button class="act-btn" id="loginBtn" onclick="doLogin()">Anmelden &#8594;</button><div id="attInfo" style="color:var(--muted);font-size:.75rem;margin-top:8px"></div></div>
+  <div class="totp-box" id="totpStep"><div style="font-size:1.5rem;margin-bottom:8px">&#128272;</div><div style="font-weight:700;margin-bottom:4px">Zwei-Faktor-Code</div><div style="color:var(--muted);font-size:.84rem;margin-bottom:16px">Code aus Authenticator App eingeben</div>
   <div class="totp-inputs" id="totpInputs"><input class="totp-digit" maxlength="1" id="t0" oninput="totpNext(this,1)" onkeydown="totpKey(event,this,0)"><input class="totp-digit" maxlength="1" id="t1" oninput="totpNext(this,2)" onkeydown="totpKey(event,this,1)"><input class="totp-digit" maxlength="1" id="t2" oninput="totpNext(this,3)" onkeydown="totpKey(event,this,2)"><input class="totp-digit" maxlength="1" id="t3" oninput="totpNext(this,4)" onkeydown="totpKey(event,this,3)"><input class="totp-digit" maxlength="1" id="t4" oninput="totpNext(this,5)" onkeydown="totpKey(event,this,4)"><input class="totp-digit" maxlength="1" id="t5" oninput="submitTotp()" onkeydown="totpKey(event,this,5)"></div>
-  <button class="act-btn" id="totpBtn" onclick="submitTotp()">Bestätigen →</button></div>
+  <button class="act-btn" id="totpBtn" onclick="submitTotp()">Bestätigen &#8594;</button></div>
   <div style="margin-top:14px"><button onclick="closeLogin()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:var(--font)">Abbrechen</button></div>
 </div></div>
 <!-- Edit Panel -->
 <div class="overlay" id="editPanel"><div class="edit-box">
-  <h2>Seite bearbeiten <button class="x-btn" onclick="closeEdit()">✕</button></h2>
-  <div class="sess-badge">🔒 Eingeloggt</div>
-  <div class="maint-active-badge" id="maintBadge">🔴 Wartungsmodus aktiv</div>
+  <h2>Seite bearbeiten <button class="x-btn" onclick="closeEdit()">&#10005;</button></h2>
+  <div class="sess-badge">&#128274; Eingeloggt</div>
+  <div class="maint-active-badge" id="maintBadge">&#128308; Wartungsmodus aktiv</div>
   <div class="edit-section"><div class="sec-title">Profil</div><div class="profile-bar" id="adminBar"></div></div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('links',this)">🔗 Links</button>
-    <button class="tab-btn" onclick="switchTab('design',this)">🎨 Design</button>
-    <button class="tab-btn" onclick="switchTab('stats',this)">📊 Stats</button>
-    <button class="tab-btn" onclick="switchTab('page',this)">📄 Seite</button>
-    <button class="tab-btn" onclick="switchTab('themes',this)">🎨 Themes</button>
-    <button class="tab-btn" onclick="switchTab('backup',this)">📤 Backup</button>
-    <button class="tab-btn" onclick="switchTab('security',this)">🔒 Sicher.</button>
+    <button class="tab-btn active" onclick="switchTab('links',this)">&#128279; Links</button>
+    <button class="tab-btn" onclick="switchTab('design',this)">&#127912; Design</button>
+    <button class="tab-btn" onclick="switchTab('stats',this)">&#128202; Stats</button>
+    <button class="tab-btn" onclick="switchTab('page',this)">&#128196; Seite</button>
+    <button class="tab-btn" onclick="switchTab('themes',this)">&#127912; Themes</button>
+    <button class="tab-btn" onclick="switchTab('backup',this)">&#128228; Backup</button>
+    <button class="tab-btn" onclick="switchTab('security',this)">&#128274; Sicher.</button>
   </div>
 
   <!-- LINKS TAB -->
@@ -526,10 +563,10 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
       <div class="tog-row"><div class="tog-row-lbl">Wartungsmodus<small>Besucher sehen Wartungsseite</small></div><label class="tog danger"><input type="checkbox" id="maintToggle"><span class="tog-sl"></span></label></div>
       <input class="inp" id="maintText" placeholder="Wartungstext...">
     </div>
-    <div class="sec-title">Links <span style="color:var(--muted);font-weight:400;text-transform:none;font-size:.7rem">⠿ ziehen zum sortieren</span></div>
+    <div class="sec-title">Links <span style="color:var(--muted);font-weight:400;text-transform:none;font-size:.7rem">&#10303; ziehen zum sortieren</span></div>
     <div id="editItems"></div>
     <button class="add-btn" onclick="addLink()">+ Neuen Link hinzufügen</button>
-    <button class="save-btn" id="saveBtn" onclick="saveAll()">✓ Speichern & Schließen</button>
+    <button class="save-btn" id="saveBtn" onclick="saveAll()">&#10003; Speichern & Schließen</button>
   </div>
 
   <!-- DESIGN TAB -->
@@ -544,7 +581,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     <div class="edit-section">
       <div class="sec-title">Schriftart</div>
       <select class="inp" id="fontFamily" onchange="previewFont()"><option value="DM Sans">DM Sans (Standard)</option><option value="Inter">Inter</option><option value="Raleway">Raleway</option><option value="Space Grotesk">Space Grotesk</option><option value="Outfit">Outfit</option><option value="Syne">Syne</option></select>
-      <div id="fontPreview" style="font-size:.9rem;color:var(--muted);padding:8px;background:rgba(255,255,255,.03);border-radius:6px;margin-top:-4px">Vorschau: Mein Profil · Kreativstudio</div>
+      <div id="fontPreview" style="font-size:.9rem;color:var(--muted);padding:8px;background:rgba(255,255,255,.03);border-radius:6px;margin-top:-4px">Vorschau: Mein Profil &middot; Kreativstudio</div>
     </div>
     <div class="edit-section">
       <div class="sec-title">Farbschema</div>
@@ -554,70 +591,70 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     <div class="edit-section">
       <div class="sec-title">Logo</div>
       <img id="logoPreview" class="img-sm" src="" alt="">
-      <div class="upload-zone" onclick="document.getElementById('logoUp').click()"><input type="file" id="logoUp" accept="image/*" onchange="uploadImg(this,'logo','logoPreview','logo_url')">🏷️ Logo hochladen (PNG empfohlen)</div>
-      <button class="sec-btn" onclick="removeImg('logo_url','logoPreview','siteLogo')">🗑️ Logo entfernen</button>
+      <div class="upload-zone" onclick="document.getElementById('logoUp').click()"><input type="file" id="logoUp" accept="image/*" onchange="uploadImg(this,'logo','logoPreview','logo_url')">&#127991; Logo hochladen (PNG empfohlen)</div>
+      <button class="sec-btn" onclick="removeImg('logo_url','logoPreview','siteLogo')">&#128465; Logo entfernen</button>
     </div>
     <div class="edit-section">
       <div class="sec-title">Profilbild</div>
       <img id="avPreview" class="av-prev" src="" alt="">
-      <div class="upload-zone" onclick="document.getElementById('avUp').click()"><input type="file" id="avUp" accept="image/*" onchange="uploadImg(this,'avatar','avPreview','avatar_url')">🖼️ Profilbild (GIF = Animation)</div>
+      <div class="upload-zone" onclick="document.getElementById('avUp').click()"><input type="file" id="avUp" accept="image/*" onchange="uploadImg(this,'avatar','avPreview','avatar_url')">&#128444; Profilbild (GIF = Animation)</div>
       <label class="chk-lbl" style="margin:8px 0"><input type="checkbox" id="avatarAnimated"> Float-Animation</label>
-      <label class="lbl" style="margin-top:10px">🎨 Avatar Bildfilter</label>
+      <label class="lbl" style="margin-top:10px">&#127912; Avatar Bildfilter</label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
         <button onclick="setAvatarFilter('filter-none',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">Original</button>
-        <button onclick="setAvatarFilter('filter-neon',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">🌈 Neon</button>
-        <button onclick="setAvatarFilter('filter-cool',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">❄️ Cool</button>
-        <button onclick="setAvatarFilter('filter-warm',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">🌅 Warm</button>
-        <button onclick="setAvatarFilter('filter-mono',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">⬛ Mono</button>
-        <button onclick="setAvatarFilter('filter-glow',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">✨ Glow</button>
+        <button onclick="setAvatarFilter('filter-neon',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">&#127752; Neon</button>
+        <button onclick="setAvatarFilter('filter-cool',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">&#10052; Cool</button>
+        <button onclick="setAvatarFilter('filter-warm',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">&#127749; Warm</button>
+        <button onclick="setAvatarFilter('filter-mono',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">&#11035; Mono</button>
+        <button onclick="setAvatarFilter('filter-glow',this)" class="filter-btn" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:.78rem;cursor:pointer;color:var(--fg);font-family:var(--font)">&#10024; Glow</button>
       </div>
       <input type="hidden" id="avatarFilter" value="filter-none">
-      <button class="sec-btn" onclick="removeImg('avatar_url','avPreview',null)">🗑️ Profilbild entfernen</button>
+      <button class="sec-btn" onclick="removeImg('avatar_url','avPreview',null)">&#128465; Profilbild entfernen</button>
     </div>
     <div class="edit-section">
       <div class="sec-title">Hintergrundbild</div>
       <img id="bgPreview" class="up-prev" src="" alt="">
-      <div class="upload-zone" onclick="document.getElementById('bgUp').click()"><input type="file" id="bgUp" accept="image/*" onchange="uploadImg(this,'bg','bgPreview','bg_image')">🌄 Hintergrundbild (max. 5MB)</div>
-      <button class="sec-btn" onclick="removeImg('bg_image','bgPreview',null)">🗑️ Hintergrund entfernen</button>
+      <div class="upload-zone" onclick="document.getElementById('bgUp').click()"><input type="file" id="bgUp" accept="image/*" onchange="uploadImg(this,'bg','bgPreview','bg_image')">&#127748; Hintergrundbild (max. 5MB)</div>
+      <button class="sec-btn" onclick="removeImg('bg_image','bgPreview',null)">&#128465; Hintergrund entfernen</button>
     </div>
     <div class="edit-section">
       <div class="sec-title">Partikel</div>
       <div class="tog-row"><div class="tog-row-lbl">Partikel aktivieren</div><label class="tog"><input type="checkbox" id="bgParticles" onchange="previewParticles()"><span class="tog-sl"></span></label></div>
-      <select class="inp" id="particleStyle" onchange="previewParticles()"><option value="stars">⭐ Sterne</option><option value="dots">· Punkte</option><option value="snow">❄ Schnee</option><option value="bubbles">○ Blasen</option></select>
+      <select class="inp" id="particleStyle" onchange="previewParticles()"><option value="stars">&#11088; Sterne</option><option value="dots">&middot; Punkte</option><option value="snow">&#10052; Schnee</option><option value="bubbles">&#9675; Blasen</option></select>
     </div>
     <div id="upMsg" class="up-msg"></div>
-    <button class="save-btn" id="saveBtnD" onclick="saveAll()">✓ Design speichern</button>
+    <button class="save-btn" id="saveBtnD" onclick="saveAll()">&#10003; Design speichern</button>
   </div>
 
   <!-- STATS TAB -->
   <div class="tab-content" id="tab-stats">
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="stV">—</div><div class="stat-lbl">Besucher</div></div>
-      <div class="stat-card"><div class="stat-num" id="stT">—</div><div class="stat-lbl">Heute</div></div>
-      <div class="stat-card"><div class="stat-num" id="stC">—</div><div class="stat-lbl">Klicks</div></div>
+      <div class="stat-card"><div class="stat-num" id="stV">&mdash;</div><div class="stat-lbl">Besucher</div></div>
+      <div class="stat-card"><div class="stat-num" id="stT">&mdash;</div><div class="stat-lbl">Heute</div></div>
+      <div class="stat-card"><div class="stat-num" id="stC">&mdash;</div><div class="stat-lbl">Klicks</div></div>
     </div>
-    <div class="chart-wrap"><div class="chart-title">Besucher — 14 Tage</div><div class="bar-chart" id="visChart"></div></div>
+    <div class="chart-wrap"><div class="chart-title">Besucher &mdash; 14 Tage</div><div class="bar-chart" id="visChart"></div></div>
     <div class="chart-wrap"><div class="chart-title">Link Klicks</div><div id="clkChart"></div></div>
-    <div class="chart-wrap"><div class="chart-title">🌍 Traffic-Quellen (UTM)</div><div id="utmChart"></div></div>
-    <div class="chart-wrap"><div class="chart-title">🎯 A/B Tests</div><div id="abChart"></div></div>
+    <div class="chart-wrap"><div class="chart-title">&#127757; Traffic-Quellen (UTM)</div><div id="utmChart"></div></div>
+    <div class="chart-wrap"><div class="chart-title">&#127919; A/B Tests</div><div id="abChart"></div></div>
     <div class="chart-wrap"><div class="chart-title">Gerät & Stunde</div><div id="deviceChart"></div><div id="hourChart" style="margin-top:10px"></div></div>
-    <div class="chart-wrap"><div class="chart-title">🌍 Länder</div><div id="countryChart"></div></div>
-    <button class="sec-btn" onclick="loadStats()">🔄 Aktualisieren</button>
+    <div class="chart-wrap"><div class="chart-title">&#127757; Länder</div><div id="countryChart"></div></div>
+    <button class="sec-btn" onclick="loadStats()">&#128260; Aktualisieren</button>
   </div>
 
   <!-- PAGE TAB -->
   <div class="tab-content" id="tab-page">
     <div class="edit-section">
       <div class="sec-title">Browser Tab</div>
-      <label class="lbl">Tab-Titel</label><input class="inp" id="pageTitle" placeholder="z.B. Mein Profil | Links">
+      <label class="lbl">Tab-Titel</label><input class="inp" id="pageTitle" placeholder="z.B. LimitGames | Links">
       <label class="lbl">Favicon</label>
       <img id="favPreview" class="img-sm" src="" alt="">
-      <div class="upload-zone" onclick="document.getElementById('favUp').click()"><input type="file" id="favUp" accept="image/*" onchange="uploadImg(this,'favicon','favPreview','favicon_url')">🖼️ Favicon (32×32px PNG)</div>
+      <div class="upload-zone" onclick="document.getElementById('favUp').click()"><input type="file" id="favUp" accept="image/*" onchange="uploadImg(this,'favicon','favPreview','favicon_url')">&#128444; Favicon (32&times;32px PNG)</div>
     </div>
     <div class="edit-section">
       <div class="sec-title">Sprache</div>
       <div class="tog-row"><div class="tog-row-lbl">DE / EN Umschalter anzeigen<small>Besucher können Sprache wechseln</small></div><label class="tog"><input type="checkbox" id="langEnabled"><span class="tog-sl"></span></label></div>
-      <div class="info-box">💡 Für jeden Link ein englisches Label im Links-Tab eintragen. Der Umschalter erscheint oben rechts auf der Seite.</div>
+      <div class="info-box">&#128161; Für jeden Link ein englisches Label im Links-Tab eintragen. Der Umschalter erscheint oben rechts auf der Seite.</div>
     </div>
     <div class="edit-section">
       <div class="sec-title">Footer</div>
@@ -626,14 +663,14 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     </div>
     <div class="edit-section">
       <div class="sec-title">Ambient Sound</div>
-      <div class="upload-zone" onclick="document.getElementById('audioUp').click()"><input type="file" id="audioUp" accept="audio/*" onchange="uploadAudio(this)">🎵 Musik (MP3/OGG/WAV · max. 10MB)</div>
+      <div class="upload-zone" onclick="document.getElementById('audioUp').click()"><input type="file" id="audioUp" accept="audio/*" onchange="uploadAudio(this)">&#127925; Musik (MP3/OGG/WAV &middot; max. 10MB)</div>
       <div id="audioMsg" class="up-msg"></div>
-      <button class="sec-btn" onclick="removeAudio()">🗑️ Musik entfernen</button>
+      <button class="sec-btn" onclick="removeAudio()">&#128465; Musik entfernen</button>
     </div>
     <div class="edit-section">
-      <div class="sec-title">📢 Announcement Banner</div>
+      <div class="sec-title">&#128226; Announcement Banner</div>
       <div class="tog-row"><div class="tog-row-lbl">Banner anzeigen<small>Ankündigung oben auf der Seite</small></div><label class="tog"><input type="checkbox" id="announceEnabled"><span class="tog-sl"></span></label></div>
-      <label class="lbl">Text</label><input class="inp" id="announceText2" placeholder="z.B. 🎉 Neues Merch jetzt verfügbar!">
+      <label class="lbl">Text</label><input class="inp" id="announceText2" placeholder="z.B. &#127881; Neues Merch jetzt verfügbar!">
       <label class="lbl">Stil</label>
       <select class="inp" id="announceStyle">
         <option value="accent">Cyan (Standard)</option>
@@ -644,16 +681,34 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
       </select>
     </div>
     <div class="edit-section">
-      <div class="sec-title">🎵 Spotify Now Playing</div>
+      <div class="sec-title">&#127925; Spotify Now Playing</div>
+            <!-- Twitch Live Status -->
+      <div class="edit-section">
+        <div class="sec-title">&#127918; Twitch Live Status</div>
+        <div class="tog-row"><div class="tog-row-lbl">Live-Karte anzeigen<small>Zeigt automatisch wenn du live bist</small></div><label class="tog"><input type="checkbox" id="twitchEnabled"><span class="tog-sl"></span></label></div>
+        <div class="info-box">Trage deinen Twitch-Kanal ein. Die Live-Prüfung läuft alle 2 Minuten. <a href="https://dev.twitch.tv/console" target="_blank" style="color:var(--accent)">dev.twitch.tv &#8594;</a></div>
+        <label class="lbl">Twitch Benutzername</label><input class="inp" id="twitchUsername" placeholder="z.B. limitgames">
+        <label class="lbl">Twitch Client ID</label><input class="inp" id="twitchClientId" placeholder="Twitch Client ID">
+        <label class="lbl">Twitch Client Secret</label><input class="inp" id="twitchClientSecret" placeholder="Twitch Client Secret" type="password">
+      </div>
+      <!-- Milestone -->
+      <div class="edit-section">
+        <div class="sec-title">&#127942; Milestone / Fortschritt</div>
+        <div class="tog-row"><div class="tog-row-lbl">Milestone anzeigen<small>Fortschrittsbalken mit Ziel</small></div><label class="tog"><input type="checkbox" id="milestoneEnabled"><span class="tog-sl"></span></label></div>
+        <label class="lbl">Beschriftung (z.B. "Discord Member")</label><input class="inp" id="milestoneTitle" placeholder="Ziel: 1000 Discord Member">
+        <label class="lbl">Aktueller Wert</label><input class="inp" id="milestoneCurrent" type="number" placeholder="0" min="0">
+        <label class="lbl">Zielwert</label><input class="inp" id="milestoneTarget" type="number" placeholder="1000" min="1">
+        <label class="lbl">Einheit (z.B. "Member", "Follower")</label><input class="inp" id="milestoneUnit" placeholder="Member">
+      </div>
       <div class="tog-row"><div class="tog-row-lbl">Spotify-Karte anzeigen<small>Zeigt was du gerade hörst</small></div><label class="tog"><input type="checkbox" id="spotifyEnabled"><span class="tog-sl"></span></label></div>
-      <div class="info-box">Füge deine Spotify-Token hier ein. <a href="https://developer.spotify.com/dashboard" target="_blank" style="color:var(--accent)">developer.spotify.com →</a></div>
+      <div class="info-box">Füge deine Spotify-Token hier ein. <a href="https://developer.spotify.com/dashboard" target="_blank" style="color:var(--accent)">developer.spotify.com &#8594;</a></div>
       <label class="lbl">Client ID</label><input class="inp" id="spotifyClientId" placeholder="Spotify Client ID">
       <label class="lbl">Client Secret</label><input class="inp" id="spotifyClientSecret" placeholder="Spotify Client Secret">
       <label class="lbl">Refresh Token</label><input class="inp" id="spotifyRefreshToken" placeholder="Spotify Refresh Token">
     </div>
     <div class="edit-section">
-      <div class="sec-title">⚖️ Impressum</div>
-      <div class="info-box">Pflichtangaben nach deutschem Recht (TMG §5). Fülle alle Felder aus!</div>
+      <div class="sec-title">&#9878; Impressum</div>
+      <div class="info-box">Pflichtangaben nach deutschem Recht (TMG &sect;5). Fülle alle Felder aus!</div>
       <label class="lbl">Name / Firma</label><input class="inp" id="impName" placeholder="Max Mustermann">
       <label class="lbl">Adresse</label><input class="inp" id="impAddress" placeholder="Musterstraße 1, 12345 Musterstadt">
       <label class="lbl">E-Mail</label><input class="inp" id="impEmail" placeholder="kontakt@example.de">
@@ -662,7 +717,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
       <label class="lbl">Zusätzliche Angaben (optional)</label><textarea class="inp" id="impExtra" rows="2" placeholder="z.B. verantwortlich für Inhalte..."></textarea>
     </div>
     <div class="edit-section">
-      <div class="sec-title">🌐 Discord Webhook</div>
+      <div class="sec-title">&#127760; Discord Webhook</div>
       <div class="info-box">Bei jedem Link-Klick wird Discord automatisch benachrichtigt.</div>
       <div class="tog-row"><div class="tog-row-lbl">Webhook aktiv<small>Klick-Benachrichtigung an Discord</small></div><label class="tog"><input type="checkbox" id="webhookEnabled"><span class="tog-sl"></span></label></div>
       <label class="lbl">Webhook URL</label><input class="inp" id="webhookUrl" placeholder="https://discord.com/api/webhooks/...">
@@ -674,33 +729,33 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     </div>
     <div class="edit-section">
       <div class="sec-title">OG / Social Preview</div>
-      <div class="og-prev"><div class="og-url">deinedomain.de</div><div class="og-ttl" id="ogPT">Seitenname</div><div class="og-dsc" id="ogPD">Kreativstudio</div></div>
+      <div class="og-prev"><div class="og-url">limitgames.de</div><div class="og-ttl" id="ogPT">Seitenname</div><div class="og-dsc" id="ogPD">Kreativstudio</div></div>
       <label class="lbl">OG Titel</label><input class="inp" id="ogTitle" oninput="updOg()">
       <label class="lbl">OG Beschreibung</label><input class="inp" id="ogDesc" oninput="updOg()" style="margin-bottom:0">
     </div>
-    <button class="save-btn" id="saveBtnP" onclick="saveAll()">✓ Seite speichern</button>
+    <button class="save-btn" id="saveBtnP" onclick="saveAll()">&#10003; Seite speichern</button>
   </div>
 
   <!-- THEMES TAB -->
   <div class="tab-content" id="tab-themes">
     <div class="edit-section">
-      <div class="sec-title">Vorlagen — auf Knopfdruck anwenden</div>
+      <div class="sec-title">Vorlagen &mdash; auf Knopfdruck anwenden</div>
       <div class="theme-grid" id="themeGrid"></div>
-      <div class="info-box">💡 Themes überschreiben Farben. Danach im Design-Tab weiter anpassen.</div>
+      <div class="info-box">&#128161; Themes überschreiben Farben. Danach im Design-Tab weiter anpassen.</div>
     </div>
-    <button class="save-btn" onclick="saveAll()">✓ Theme speichern</button>
+    <button class="save-btn" onclick="saveAll()">&#10003; Theme speichern</button>
   </div>
 
   <!-- BACKUP TAB -->
   <div class="tab-content" id="tab-backup">
     <div class="edit-section">
       <div class="sec-title">Export / Backup</div>
-      <button class="sec-btn" onclick="doExport()" style="border-color:rgba(0,229,255,.3);color:var(--accent)">⬇ Backup herunterladen (JSON)</button>
+      <button class="sec-btn" onclick="doExport()" style="border-color:rgba(0,229,255,.3);color:var(--accent)">&#11015; Backup herunterladen (JSON)</button>
     </div>
     <div class="edit-section">
       <div class="sec-title">Import / Wiederherstellen</div>
-      <div class="info-box" style="border-color:rgba(255,180,0,.2);background:rgba(255,180,0,.04)">⚠️ Import überschreibt vorhandene Profile. Neue werden hinzugefügt.</div>
-      <div class="upload-zone" onclick="document.getElementById('backupFile').click()"><input type="file" id="backupFile" accept=".json" onchange="doImport(this)">📂 Backup-Datei auswählen (.json)</div>
+      <div class="info-box" style="border-color:rgba(255,180,0,.2);background:rgba(255,180,0,.04)">&#9888; Import überschreibt vorhandene Profile. Neue werden hinzugefügt.</div>
+      <div class="upload-zone" onclick="document.getElementById('backupFile').click()"><input type="file" id="backupFile" accept=".json" onchange="doImport(this)">&#128194; Backup-Datei auswählen (.json)</div>
       <div id="importMsg" class="up-msg"></div>
     </div>
   </div>
@@ -715,11 +770,11 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <img id="twoFaQr" class="twofa-qr" src="" alt="2FA QR">
         <div class="twofa-sec" id="twoFaSec"></div>
         <div class="field"><label>6-stelligen Code bestätigen</label><input type="text" id="twoFaCode" placeholder="000000" maxlength="6" style="text-align:center;font-size:1.2rem;letter-spacing:.2em"></div>
-        <button class="act-btn" onclick="confirm2FA()">✓ 2FA aktivieren</button>
+        <button class="act-btn" onclick="confirm2FA()">&#10003; 2FA aktivieren</button>
         <div style="margin-top:8px"><button onclick="document.getElementById('twoFaSetup').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:var(--font)">Abbrechen</button></div>
       </div>
       <div id="twoFaDis" style="display:none">
-        <div class="field"><label>Passwort bestätigen</label><input type="password" id="dis2FaPw" placeholder="••••••••"></div>
+        <div class="field"><label>Passwort bestätigen</label><input type="password" id="dis2FaPw" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
         <button class="act-btn" style="background:rgba(255,68,68,.2);color:var(--danger)" onclick="disable2FA()">2FA deaktivieren</button>
         <div style="margin-top:8px"><button onclick="document.getElementById('twoFaDis').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:var(--font)">Abbrechen</button></div>
       </div>
@@ -730,7 +785,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     </div>
     <div class="divider">
       <div class="edit-section">
-        <div class="sec-title">🚫 IP-Blacklist</div>
+        <div class="sec-title">&#128683; IP-Blacklist</div>
         <div class="info-box">Trage eine IP-Adresse ein um sie dauerhaft zu sperren. Hash-Format wird automatisch erzeugt.</div>
         <div style="display:flex;gap:8px;margin-bottom:8px">
           <input class="inp" id="banIp" placeholder="IP-Adresse z.B. 192.168.1.1" style="margin-bottom:0;flex:1">
@@ -740,16 +795,16 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <div id="blacklistEntries" style="font-size:.8rem;color:var(--muted)">Lädt...</div>
       </div>
       <div class="edit-section" style="margin-top:8px">
-        <div class="sec-title">📋 Aktivitätsprotokoll</div>
+        <div class="sec-title">&#128203; Aktivitätsprotokoll</div>
         <div id="activityLog" style="font-size:.78rem;color:var(--muted);max-height:200px;overflow-y:auto;">Lädt...</div>
       </div>
-      <button class="sec-btn" onclick="document.getElementById('pwFields').classList.toggle('open')">🔑 Passwort ändern</button>
+      <button class="sec-btn" onclick="document.getElementById('pwFields').classList.toggle('open')">&#128273; Passwort ändern</button>
       <div class="pw-fields" id="pwFields">
-        <label class="lbl">Aktuelles Passwort</label><input type="password" class="inp" id="oldPw" placeholder="••••••••">
+        <label class="lbl">Aktuelles Passwort</label><input type="password" class="inp" id="oldPw" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;">
         <label class="lbl">Neues Passwort (min. 8 Zeichen + Großbuchstabe + Zahl)</label>
-        <input type="password" class="inp" id="newPw" placeholder="••••••••" oninput="pwStr(this.value)">
+        <input type="password" class="inp" id="newPw" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" oninput="pwStr(this.value)">
         <div class="pw-str" id="pwStrEl"></div>
-        <label class="lbl" style="margin-top:8px">Bestätigen</label><input type="password" class="inp" id="newPw2" placeholder="••••••••" style="margin-bottom:4px">
+        <label class="lbl" style="margin-top:8px">Bestätigen</label><input type="password" class="inp" id="newPw2" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" style="margin-bottom:4px">
         <div id="pwMsg" style="font-size:.8rem;margin-top:4px"></div>
         <button class="act-btn" style="margin-top:8px" onclick="changePw()">Passwort speichern</button>
       </div>
@@ -759,7 +814,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
           <div>
             <div style="font-size:.78rem;color:var(--muted)">Aktuelle Version</div>
-            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.0.0</div>
+            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.1.0</div>
           </div>
           <button class="sec-btn" id="checkUpdateBtn" onclick="checkUpdate()" style="margin:0;padding:8px 14px;font-size:.78rem">
             &#128270; Nach Updates suchen
@@ -780,7 +835,7 @@ async function getCsrf(){
   try{
     const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'get_csrf'})});
     const d=await r.json();_csrf=d.token||'';return _csrf;
-  }catch(e){return '';} // fail gracefully — never block login
+  }catch(e){return '';} // fail gracefully &mdash; never block login
 }
 async function api(a,d={}){
   try{
@@ -792,19 +847,19 @@ async function api(a,d={}){
   }catch(e){console.warn('API error:',a,e);return{ok:false,msg:'Verbindungsfehler'};}
 }
 
-// ── State ──────────────────────────────────────────────
+// &#9472;&#9472; State &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let slug='main',allProfs=[],links=[],imgs={logo_url:'',avatar_url:'',bg_image:'',favicon_url:'',ambient_sound:''},unlockIdx=-1,audioEl=null,pAnim=null,dragIdx=null,currentLang='de',langEnabled=false,countdownTimers=[];
 
-// ── Language ───────────────────────────────────────────
-function toggleLang(){currentLang=currentLang==='de'?'en':'de';document.getElementById('langToggle').textContent=currentLang==='de'?'🌐 EN':'🌐 DE';refreshLinkLabels();}
+// &#9472;&#9472; Language &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+function toggleLang(){currentLang=currentLang==='de'?'en':'de';document.getElementById('langToggle').textContent=currentLang==='de'?'&#127760; EN':'&#127760; DE';refreshLinkLabels();}
 function refreshLinkLabels(){const items=document.querySelectorAll('.link-label');items.forEach((el,i)=>{if(links[i]){const lbl=currentLang==='en'&&links[i].label_en?links[i].label_en:links[i].label;el.textContent=lbl;}});}
 
-// ── Cookies ────────────────────────────────────────────
+// &#9472;&#9472; Cookies &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function initCookies(show,txt){if(!show)return;document.getElementById('ckText').textContent=txt||'Diese Seite verwendet keine Tracking-Cookies.';if(!localStorage.getItem('ck_ok'))setTimeout(()=>document.getElementById('cookieBanner').classList.add('show'),800);}
 function accCookies(){localStorage.setItem('ck_ok','1');document.getElementById('cookieBanner').classList.remove('show');}
 function decCookies(){localStorage.setItem('ck_ok','0');document.getElementById('cookieBanner').classList.remove('show');}
 
-// ── Particles ──────────────────────────────────────────
+// &#9472;&#9472; Particles &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function initParticles(style){
   const cv=document.getElementById('particleCanvas'),ctx=cv.getContext('2d');cv.classList.add('on');cv.width=window.innerWidth;cv.height=window.innerHeight;
   window.onresize=()=>{cv.width=window.innerWidth;cv.height=window.innerHeight;};
@@ -817,12 +872,12 @@ function initParticles(style){
 function stopParticles(){if(pAnim)cancelAnimationFrame(pAnim);const cv=document.getElementById('particleCanvas');cv.classList.remove('on');cv.getContext('2d').clearRect(0,0,cv.width,cv.height);}
 function previewParticles(){const on=document.getElementById('bgParticles').checked,s=document.getElementById('particleStyle').value;if(on)initParticles(s);else stopParticles();}
 
-// ── Sound ──────────────────────────────────────────────
+// &#9472;&#9472; Sound &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function initSound(url){if(!url)return;const sb=document.getElementById('soundBtn');sb.classList.add('has-sound');audioEl=new Audio(url);audioEl.loop=true;audioEl.volume=.3;}
-function toggleSound(){if(!audioEl)return;const b=document.getElementById('soundBtn');if(audioEl.paused){audioEl.play();b.textContent='🎵 Musik';b.classList.add('playing');}else{audioEl.pause();b.textContent='🔇 Musik';b.classList.remove('playing');}}
+function toggleSound(){if(!audioEl)return;const b=document.getElementById('soundBtn');if(audioEl.paused){audioEl.play();b.textContent='&#127925; Musik';b.classList.add('playing');}else{audioEl.pause();b.textContent='&#128263; Musik';b.classList.remove('playing');}}
 function removeAudio(){imgs.ambient_sound='';if(audioEl){audioEl.pause();audioEl=null;}document.getElementById('soundBtn').classList.remove('has-sound','playing');document.getElementById('audioMsg').textContent='Musik entfernt.';}
 
-// ── Colors & Font ──────────────────────────────────────
+// &#9472;&#9472; Colors & Font &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function escHtml(s){
   if(!s)return'';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -832,14 +887,14 @@ function updateColors(){applyColors(document.getElementById('color1').value,docu
 function applyFont(f){document.documentElement.style.setProperty('--font',`'${f}',Arial,sans-serif`);}
 function previewFont(){const f=document.getElementById('fontFamily').value;applyFont(f);const p=document.getElementById('fontPreview');if(p){p.style.fontFamily=`'${f}',Arial,sans-serif`;}}
 
-// ── Themes ─────────────────────────────────────────────
+// &#9472;&#9472; Themes &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 const THEMES=[
-  {id:'default',label:'Dark',bg:'#07090e',c1:'#00e5ff',c2:'#7b5cff',e:'🌑'},
-  {id:'neon',label:'Neon',bg:'#010a10',c1:'#00ffaa',c2:'#00aaff',e:'⚡'},
-  {id:'minimal',label:'Minimal',bg:'#0e0e0e',c1:'#ffffff',c2:'#aaaaaa',e:'◻'},
-  {id:'sunset',label:'Sunset',bg:'#0d0608',c1:'#ff6432',c2:'#ff1f6e',e:'🌅'},
-  {id:'ocean',label:'Ocean',bg:'#020d18',c1:'#0096ff',c2:'#00e0cc',e:'🌊'},
-  {id:'forest',label:'Forest',bg:'#040a06',c1:'#3ec85a',c2:'#a0e040',e:'🌿'},
+  {id:'default',label:'Dark',bg:'#07090e',c1:'#00e5ff',c2:'#7b5cff',e:'&#127761;'},
+  {id:'neon',label:'Neon',bg:'#010a10',c1:'#00ffaa',c2:'#00aaff',e:'&#9889;'},
+  {id:'minimal',label:'Minimal',bg:'#0e0e0e',c1:'#ffffff',c2:'#aaaaaa',e:'&#9723;'},
+  {id:'sunset',label:'Sunset',bg:'#0d0608',c1:'#ff6432',c2:'#ff1f6e',e:'&#127749;'},
+  {id:'ocean',label:'Ocean',bg:'#020d18',c1:'#0096ff',c2:'#00e0cc',e:'&#127754;'},
+  {id:'forest',label:'Forest',bg:'#040a06',c1:'#3ec85a',c2:'#a0e040',e:'&#127807;'},
 ];
 let activeTheme='default';
 function renderThemeGrid(){
@@ -847,29 +902,29 @@ function renderThemeGrid(){
   THEMES.forEach(t=>{const c=document.createElement('div');c.className='theme-card'+(activeTheme===t.id?' active':'');c.style.cssText=`background:${t.bg};color:#fff;border-color:${activeTheme===t.id?t.c1:'rgba(255,255,255,.1)'}`;c.innerHTML=`<div style="font-size:1.4rem;margin-bottom:4px">${t.e}</div><div style="background:linear-gradient(135deg,${t.c1},${t.c2});-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700">${t.label}</div><div style="display:flex;gap:4px;justify-content:center;margin-top:6px"><div style="width:14px;height:14px;border-radius:50%;background:${t.c1}"></div><div style="width:14px;height:14px;border-radius:50%;background:${t.c2}"></div></div>`;c.onclick=()=>{activeTheme=t.id;THEMES.forEach(x=>document.body.classList.remove('theme-'+x.id));if(t.id!=='default')document.body.classList.add('theme-'+t.id);document.getElementById('color1').value=t.c1;document.getElementById('color2').value=t.c2;applyColors(t.c1,t.c2);renderThemeGrid();};g.appendChild(c);});
 }
 
-// ── Countdown ──────────────────────────────────────────
+// &#9472;&#9472; Countdown &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function startCountdowns(){
   countdownTimers.forEach(t=>clearInterval(t));countdownTimers=[];
   document.querySelectorAll('[data-countdown]').forEach(el=>{
     const target=new Date(el.dataset.countdown).getTime();
-    function update(){const now=Date.now();const diff=target-now;if(diff<=0){el.innerHTML='🎉 Los gehts!';return;}const d=Math.floor(diff/86400000);const h=Math.floor((diff%86400000)/3600000);const m=Math.floor((diff%3600000)/60000);const s=Math.floor((diff%60000)/1000);el.innerHTML=`${d>0?`<span class="cd-seg">${d}T</span>`:''}${h>0?`<span class="cd-seg">${h}h</span>`:''}<span class="cd-seg">${m}m</span><span class="cd-seg">${s}s</span>`;}
+    function update(){const now=Date.now();const diff=target-now;if(diff<=0){el.innerHTML='&#127881; Los gehts!';return;}const d=Math.floor(diff/86400000);const h=Math.floor((diff%86400000)/3600000);const m=Math.floor((diff%3600000)/60000);const s=Math.floor((diff%60000)/1000);el.innerHTML=`${d>0?`<span class="cd-seg">${d}T</span>`:''}${h>0?`<span class="cd-seg">${h}h</span>`:''}<span class="cd-seg">${m}m</span><span class="cd-seg">${s}s</span>`;}
     update();countdownTimers.push(setInterval(update,1000));
   });
 }
 
-// ── Brand Icons ────────────────────────────────────────
+// &#9472;&#9472; Brand Icons &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 const BM=[{m:/twitch\.tv/,s:'twitch',c:'#9146ff'},{m:/discord\.(gg|com)/,s:'discord',c:'#5865f2'},{m:/instagram\.com/,s:'instagram',c:'#E1306C'},{m:/tiktok\.com/,s:'tiktok',c:'#010101'},{m:/youtube\.com|youtu\.be/,s:'youtube',c:'#ff0000'},{m:/twitter\.com|x\.com/,s:'x',c:'#000000'},{m:/facebook\.com/,s:'facebook',c:'#1877f2'},{m:/linkedin\.com/,s:'linkedin',c:'#0077b5'},{m:/github\.com/,s:'github',c:'#181717'},{m:/spotify\.com/,s:'spotify',c:'#1db954'},{m:/soundcloud\.com/,s:'soundcloud',c:'#ff5500'},{m:/patreon\.com/,s:'patreon',c:'#ff424d'},{m:/kick\.com/,s:'kick',c:'#53fc18'},{m:/steampowered\.com/,s:'steam',c:'#1b2838'},{m:/reddit\.com/,s:'reddit',c:'#ff4500'},{m:/snapchat\.com/,s:'snapchat',c:'#fffc00'},{m:/pinterest\.com/,s:'pinterest',c:'#e60023'},{m:/paypal\.com/,s:'paypal',c:'#003087'},{m:/ko-fi\.com/,s:'kofi',c:'#ff5e5b'},{m:/linktr\.ee/,s:'linktree',c:'#39e09b'},{m:/mailto:/,s:'gmail',c:'#ea4335'},{m:/whatsapp\.com|wa\.me/,s:'whatsapp',c:'#25d366'},{m:/t\.me|telegram\./,s:'telegram',c:'#26a5e4'},{m:/etsy\.com/,s:'etsy',c:'#f1641e'},{m:/amazon\./,s:'amazon',c:'#ff9900'},{m:/behance\.net/,s:'behance',c:'#1769ff'},{m:/dribbble\.com/,s:'dribbble',c:'#ea4c89'},{m:/vimeo\.com/,s:'vimeo',c:'#1ab7ea'}];
 function getBrand(url){if(!url)return null;for(const b of BM)if(b.m.test(url))return b;return null;}
 function siUrl(s){return`https://cdn.simpleicons.org/${s}/ffffff`;}
-function mkIcon(l){const br=getBrand(l.url);if(br){const bg=l.color&&l.color!=='rgba(255,255,255,0.08)'?l.color:br.c;return`<div class="link-icon has-brand" style="background:${bg}"><img src="${siUrl(br.s)}" alt="" onerror="this.parentElement.classList.remove('has-brand');this.parentElement.innerHTML='${(l.emoji||'🔗').replace(/'/g,"\\'")}'" loading="lazy"></div>`;}return`<div class="link-icon" style="background:${l.color||'rgba(255,255,255,0.08)'}">${l.emoji||'🔗'}</div>`;}
-function mkPill(l){const br=getBrand(l.url);if(br)return`<img src="${siUrl(br.s)}" alt="" onerror="this.outerHTML='${(l.emoji||'🔗').replace(/'/g,"\\'")}'" loading="lazy">`;return l.emoji||'🔗';}
+function mkIcon(l){const br=getBrand(l.url);if(br){const bg=l.color&&l.color!=='rgba(255,255,255,0.08)'?l.color:br.c;return`<div class="link-icon has-brand" style="background:${bg}"><img src="${siUrl(br.s)}" alt="" onerror="this.parentElement.classList.remove('has-brand');this.parentElement.innerHTML='${(l.emoji||'&#128279;').replace(/'/g,"\\'")}'" loading="lazy"></div>`;}return`<div class="link-icon" style="background:${l.color||'rgba(255,255,255,0.08)'}">${l.emoji||'&#128279;'}</div>`;}
+function mkPill(l){const br=getBrand(l.url);if(br)return`<img src="${siUrl(br.s)}" alt="" onerror="this.outerHTML='${(l.emoji||'&#128279;').replace(/'/g,"\\'")}'" loading="lazy">`;return l.emoji||'&#128279;';}
 
-// ── Badge & Video ──────────────────────────────────────
+// &#9472;&#9472; Badge & Video &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function mkBadge(b){if(!b)return'';const m={neu:'badge-neu',hot:'badge-hot',sale:'badge-sale',bald:'badge-bald',live:'badge-live'};return`<span class="link-badge ${m[b.toLowerCase()]||'badge-neu'}">${b}</span>`;}
 function getVideoEmbed(url){if(!url)return'';let m;m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);if(m)return`<div class="video-embed"><iframe src="https://www.youtube.com/embed/${m[1]}" allowfullscreen loading="lazy"></iframe></div>`;m=url.match(/twitch\.tv\/videos\/(\d+)/);if(m)return`<div class="video-embed"><iframe src="https://player.twitch.tv/?video=${m[1]}&parent=${location.hostname}" allowfullscreen loading="lazy"></iframe></div>`;m=url.match(/twitch\.tv\/([a-zA-Z0-9_]+)$/);if(m)return`<div class="video-embed"><iframe src="https://player.twitch.tv/?channel=${m[1]}&parent=${location.hostname}" allowfullscreen loading="lazy"></iframe></div>`;return'';}
 
-// ── Helpers ────────────────────────────────────────────
-function toggleVis(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈';}
+// &#9472;&#9472; Helpers &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+function toggleVis(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'&#128065;':'&#128584;';}
 function setBtn(id,loading,txt){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?`<span class="spinner"></span>${txt}`:txt;}
 function updOg(){document.getElementById('ogPT').textContent=document.getElementById('ogTitle').value||document.getElementById('editName')?.value||'Seitenname';document.getElementById('ogPD').textContent=document.getElementById('ogDesc').value||'Kreativstudio';}
 function pwStr(pw){let s=0;if(pw.length>=8)s++;if(pw.length>=12)s++;if(/[A-Z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;const el=document.getElementById('pwStrEl');el.style.width=[0,25,50,75,100][Math.min(s,4)]+'%';el.style.background=['#ff4444','#ff8800','#ffcc00','#00c896','#00e5ff'][Math.min(s,4)];}
@@ -878,24 +933,24 @@ function totpKey(e,el,n){if(e.key==='Backspace'&&!el.value&&n>0)document.getElem
 function getTotpCode(){return Array.from({length:6},(_,i)=>document.getElementById('t'+i).value).join('');}
 function clearTotp(){for(let i=0;i<6;i++)document.getElementById('t'+i).value='';}
 
-// ── Login ──────────────────────────────────────────────
+// &#9472;&#9472; Login &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function openLogin(){document.getElementById('loginOverlay').classList.add('open');document.getElementById('pwStep').style.display='';document.getElementById('totpStep').classList.remove('show');document.getElementById('loginPw').value='';document.getElementById('loginErr').className='err-box';document.getElementById('attInfo').textContent='';setTimeout(()=>document.getElementById('loginPw').focus(),100);}
 function closeLogin(){document.getElementById('loginOverlay').classList.remove('open');}
 async function doLogin(){
   const pw=document.getElementById('loginPw').value;if(!pw)return;
   setBtn('loginBtn',true,'Anmelden...');
   const hp=document.getElementById('hp_website')?.value||'';
-  const res=await api('login',{pw,website:hp});setBtn('loginBtn',false,'Anmelden →');
+  const res=await api('login',{pw,website:hp});setBtn('loginBtn',false,'Anmelden &#8594;');
   if(res.ok){if(res.needs2fa){document.getElementById('pwStep').style.display='none';document.getElementById('totpStep').classList.add('show');clearTotp();setTimeout(()=>document.getElementById('t0').focus(),100);}else{closeLogin();updateUI(true);startSessionTimer(30);openEdit();}}
-  else{const e=document.getElementById('loginErr');e.textContent=res.msg;e.className='err-box show';document.getElementById('loginPw').value='';const b=document.getElementById('loginBox');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');if(res.locked)document.getElementById('attInfo').textContent=`⛔ Gesperrt für ${res.mins} Min`;}
+  else{const e=document.getElementById('loginErr');e.textContent=res.msg;e.className='err-box show';document.getElementById('loginPw').value='';const b=document.getElementById('loginBox');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');if(res.locked)document.getElementById('attInfo').textContent=`&#9940; Gesperrt für ${res.mins} Min`;}
 }
 async function submitTotp(){
   const code=getTotpCode();if(code.length<6)return;setBtn('totpBtn',true,'Prüfen...');
-  const res=await api('verify_totp',{code});setBtn('totpBtn',false,'Bestätigen →');
+  const res=await api('verify_totp',{code});setBtn('totpBtn',false,'Bestätigen &#8594;');
   if(res.ok){closeLogin();updateUI(true);startSessionTimer(30);openEdit();}else{document.getElementById('loginErr').className='err-box show';document.getElementById('loginErr').textContent=res.msg;clearTotp();document.getElementById('t0').focus();}
 }
 
-// ── Edit Panel ────────────────────────────────────────
+// &#9472;&#9472; Edit Panel &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function openEdit(){
   const pr=await api('get_profiles');if(!pr.ok){openLogin();return;}allProfs=pr.profiles;renderAdminBar();
   await loadIntoEdit(slug);document.getElementById('editPanel').classList.add('open');
@@ -906,7 +961,7 @@ function updateUI(li){document.getElementById('editToggle').classList.toggle('vi
 
 async function loadIntoEdit(s){
   slug=s;const res=await api('get_settings',{slug:s});if(!res.ok){openLogin();return;}const p=res.profile;
-  document.getElementById('editName').value=p.name||'';document.getElementById('editBio').value=p.bio||'';document.getElementById('editEmoji').value=p.emoji||'🎬';
+  document.getElementById('editName').value=p.name||'';document.getElementById('editBio').value=p.bio||'';document.getElementById('editEmoji').value=p.emoji||'&#127916;';
   document.getElementById('maintText').value=p.maint_text||'';document.getElementById('maintToggle').checked=!!p.maint;document.getElementById('maintBadge').classList.toggle('show',!!p.maint);
   document.getElementById('ogTitle').value=p.og_title||'';document.getElementById('ogDesc').value=p.og_desc||'';updOg();
   document.getElementById('color1').value=p.color1||'#00e5ff';document.getElementById('color2').value=p.color2||'#7b5cff';applyColors(p.color1,p.color2);
@@ -918,6 +973,24 @@ async function loadIntoEdit(s){
   document.getElementById('announceEnabled').checked=!!p.announce_enabled;
   document.getElementById('announceText2').value=p.announce_text||'';
   document.getElementById('announceStyle').value=p.announce_style||'accent';
+  document.getElementById('twitchEnabled').checked=!!p.twitch_enabled;
+  document.getElementById('twitchUsername').value=p.twitch_username||'';
+  document.getElementById('twitchClientId').value=p.twitch_client_id||'';
+  document.getElementById('twitchClientSecret').value=p.twitch_client_secret||'';
+  document.getElementById('milestoneEnabled').checked=!!p.milestone_enabled;
+  document.getElementById('milestoneTitle').value=p.milestone_title||'';
+  document.getElementById('milestoneCurrent').value=p.milestone_current||0;
+  document.getElementById('milestoneTarget').value=p.milestone_target||1000;
+  document.getElementById('milestoneUnit').value=p.milestone_unit||'Member';
+  document.getElementById('twitchEnabled').checked=!!p.twitch_enabled;
+  document.getElementById('twitchUsername').value=p.twitch_username||'';
+  document.getElementById('twitchClientId').value=p.twitch_client_id||'';
+  document.getElementById('twitchClientSecret').value=p.twitch_client_secret||'';
+  document.getElementById('milestoneEnabled').checked=!!p.milestone_enabled;
+  document.getElementById('milestoneTitle').value=p.milestone_title||'';
+  document.getElementById('milestoneCurrent').value=p.milestone_current||0;
+  document.getElementById('milestoneTarget').value=p.milestone_target||1000;
+  document.getElementById('milestoneUnit').value=p.milestone_unit||'Member';
   document.getElementById('spotifyEnabled').checked=!!p.spotify_enabled;
   document.getElementById('spotifyClientId').value=p.spotify_client_id||'';
   document.getElementById('spotifyClientSecret').value=p.spotify_client_secret||'';
@@ -941,24 +1014,24 @@ async function loadIntoEdit(s){
 function renderAdminBar(){
   const b=document.getElementById('adminBar');b.innerHTML='';
   allProfs.forEach(p=>{const btn=document.createElement('button');btn.className='ppill'+(p.slug===slug?' active':'');btn.textContent=p.emoji+' '+p.name;btn.onclick=()=>loadIntoEdit(p.slug);b.appendChild(btn);
-    if(p.slug!=='main'){const d=document.createElement('button');d.className='del-pp';d.textContent='✕';d.onclick=async()=>{if(confirm('Profil löschen?')){await api('delete_profile',{slug:p.slug});if(slug===p.slug)slug='main';const pr=await api('get_profiles');allProfs=pr.profiles;renderAdminBar();await loadIntoEdit(slug);}};b.appendChild(d);}});
+    if(p.slug!=='main'){const d=document.createElement('button');d.className='del-pp';d.textContent='&#10005;';d.onclick=async()=>{if(confirm('Profil löschen?')){await api('delete_profile',{slug:p.slug});if(slug===p.slug)slug='main';const pr=await api('get_profiles');allProfs=pr.profiles;renderAdminBar();await loadIntoEdit(slug);}};b.appendChild(d);}});
   const a=document.createElement('button');a.className='ppill-add';a.textContent='+ Neu';a.onclick=async()=>{const name=prompt('Profilname:');if(!name)return;const s=name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-');const res=await api('create_profile',{slug:s,name});if(res.ok){const pr=await api('get_profiles');allProfs=pr.profiles;renderAdminBar();await loadIntoEdit(res.slug);}else alert(res.msg);};b.appendChild(a);
 }
 
-// ── Image / Audio Upload ───────────────────────────────
+// &#9472;&#9472; Image / Audio Upload &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function uploadImg(input,type,prevId,field){
-  const file=input.files[0];if(!file)return;const msg=document.getElementById('upMsg');msg.style.color='var(--muted)';msg.textContent='⏳ Hochladen...';
+  const file=input.files[0];if(!file)return;const msg=document.getElementById('upMsg');msg.style.color='var(--muted)';msg.textContent='&#9203; Hochladen...';
   const fd=new FormData();fd.append('image',file);fd.append('action','upload_image');fd.append('type',type);
-  try{const r=await fetch(API,{method:'POST',body:fd});const res=await r.json();if(res.ok){imgs[field]=res.url;const p=document.getElementById(prevId);if(p){p.src=res.url+'?t='+Date.now();p.classList.add('show');}msg.style.color='var(--success)';msg.textContent='✓ Hochgeladen!';}else{msg.style.color='var(--danger)';msg.textContent='❌ '+res.msg;}}catch(e){msg.style.color='var(--danger)';msg.textContent='❌ Fehler';}
+  try{const r=await fetch(API,{method:'POST',body:fd});const res=await r.json();if(res.ok){imgs[field]=res.url;const p=document.getElementById(prevId);if(p){p.src=res.url+'?t='+Date.now();p.classList.add('show');}msg.style.color='var(--success)';msg.textContent='&#10003; Hochgeladen!';}else{msg.style.color='var(--danger)';msg.textContent='&#10060; '+res.msg;}}catch(e){msg.style.color='var(--danger)';msg.textContent='&#10060; Fehler';}
 }
 async function uploadAudio(input){
-  const file=input.files[0];if(!file)return;const msg=document.getElementById('audioMsg');msg.style.color='var(--muted)';msg.textContent='⏳ Hochladen...';
+  const file=input.files[0];if(!file)return;const msg=document.getElementById('audioMsg');msg.style.color='var(--muted)';msg.textContent='&#9203; Hochladen...';
   const fd=new FormData();fd.append('audio',file);fd.append('action','upload_audio');
-  try{const r=await fetch(API,{method:'POST',body:fd});const res=await r.json();if(res.ok){imgs.ambient_sound=res.url;msg.style.color='var(--success)';msg.textContent='✓ Musik hochgeladen!';}else{msg.style.color='var(--danger)';msg.textContent='❌ '+res.msg;}}catch(e){msg.style.color='var(--danger)';msg.textContent='❌ Fehler';}
+  try{const r=await fetch(API,{method:'POST',body:fd});const res=await r.json();if(res.ok){imgs.ambient_sound=res.url;msg.style.color='var(--success)';msg.textContent='&#10003; Musik hochgeladen!';}else{msg.style.color='var(--danger)';msg.textContent='&#10060; '+res.msg;}}catch(e){msg.style.color='var(--danger)';msg.textContent='&#10060; Fehler';}
 }
 async function removeImg(field,prevId,displayId){imgs[field]='';const p=document.getElementById(prevId);if(p){p.src='';p.classList.remove('show');}if(displayId){const d=document.getElementById(displayId);if(d){d.src='';d.classList.remove('show');}}}
 
-// ── Password ───────────────────────────────────────────
+// &#9472;&#9472; Password &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function changePw(){
   const old=document.getElementById('oldPw').value,n1=document.getElementById('newPw').value,n2=document.getElementById('newPw2').value;const msg=document.getElementById('pwMsg');
   if(!old||!n1||!n2){msg.style.color='var(--danger)';msg.textContent='Alle Felder ausfüllen.';return;}
@@ -967,20 +1040,38 @@ async function changePw(){
   if(res.ok){['oldPw','newPw','newPw2'].forEach(id=>document.getElementById(id).value='');setTimeout(()=>{msg.textContent='';document.getElementById('pwFields').classList.remove('open');},2500);}
 }
 
-// ── 2FA ────────────────────────────────────────────────
-async function load2FAStatus(){const res=await api('get_2fa_status');if(!res.ok)return;const el=document.getElementById('twoFaStatus');if(res.enabled){el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.2);border-radius:8px;font-size:.85rem"><span>🛡️</span><span style="color:var(--success);font-weight:600">2FA ist aktiv</span><button onclick="document.getElementById('twoFaDis').style.display=''" style="margin-left:auto;background:none;border:1px solid rgba(255,68,68,.3);color:var(--danger);border-radius:5px;padding:3px 10px;font-size:.75rem;cursor:pointer;font-family:var(--font)">Deaktivieren</button></div>`;}else{el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:10px;background:rgba(255,200,0,.05);border:1px solid rgba(255,200,0,.15);border-radius:8px;font-size:.85rem"><span>⚠️</span><span style="color:#ffcc00;font-weight:600">2FA nicht aktiv</span><button onclick="setup2FA()" style="margin-left:auto;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:none;border-radius:5px;padding:4px 12px;font-size:.75rem;cursor:pointer;font-family:var(--font);font-weight:700">Einrichten</button></div>`;}}
+// &#9472;&#9472; 2FA &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+async function load2FAStatus(){const res=await api('get_2fa_status');if(!res.ok)return;const el=document.getElementById('twoFaStatus');if(res.enabled){el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.2);border-radius:8px;font-size:.85rem"><span>&#128737;</span><span style="color:var(--success);font-weight:600">2FA ist aktiv</span><button onclick="document.getElementById('twoFaDis').style.display=''" style="margin-left:auto;background:none;border:1px solid rgba(255,68,68,.3);color:var(--danger);border-radius:5px;padding:3px 10px;font-size:.75rem;cursor:pointer;font-family:var(--font)">Deaktivieren</button></div>`;}else{el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:10px;background:rgba(255,200,0,.05);border:1px solid rgba(255,200,0,.15);border-radius:8px;font-size:.85rem"><span>&#9888;</span><span style="color:#ffcc00;font-weight:600">2FA nicht aktiv</span><button onclick="setup2FA()" style="margin-left:auto;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:none;border-radius:5px;padding:4px 12px;font-size:.75rem;cursor:pointer;font-family:var(--font);font-weight:700">Einrichten</button></div>`;}}
 async function setup2FA(){const res=await api('setup_2fa');if(!res.ok)return;document.getElementById('twoFaQr').src=res.qrUrl;document.getElementById('twoFaSec').textContent=res.secret;document.getElementById('twoFaSetup').style.display='';document.getElementById('twoFaCode').value='';}
-async function confirm2FA(){const code=document.getElementById('twoFaCode').value.replace(/\D/g,'');if(code.length!==6){alert('6-stelligen Code eingeben.');return;}const res=await api('confirm_2fa',{code});if(res.ok){alert('✓ 2FA aktiviert!');document.getElementById('twoFaSetup').style.display='none';load2FAStatus();}else alert('❌ '+res.msg);}
-async function disable2FA(){const pw=document.getElementById('dis2FaPw').value;const res=await api('disable_2fa',{pw});if(res.ok){alert('2FA deaktiviert.');document.getElementById('twoFaDis').style.display='none';load2FAStatus();}else alert('❌ '+res.msg);}
-async function loadLoginLog(){const res=await api('get_login_log');if(!res.ok)return;const el=document.getElementById('loginLog');el.innerHTML='';if(!res.log.length){el.innerHTML='<div style="color:var(--muted);font-size:.8rem">Noch keine Einträge</div>';return;}const map={wrong_pw:'Falsches Passwort',wrong_totp:'Falscher 2FA-Code',lockout:'Gesperrt',rate_limit:'Rate Limit',password:'Login OK',totp:'2FA OK',password_changed:'Passwort geändert'};res.log.forEach(e=>{const d=new Date(e.created_at);const t=d.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});el.innerHTML+=`<div class="log-entry"><div class="log-dot ${e.success?'ok':'fail'}"></div><span>${e.success?'✅':'❌'}</span><span style="color:var(--muted)">${map[e.reason]||e.reason}</span><span class="log-time">${t}</span></div>`;});}
+async function confirm2FA(){const code=document.getElementById('twoFaCode').value.replace(/\D/g,'');if(code.length!==6){alert('6-stelligen Code eingeben.');return;}const res=await api('confirm_2fa',{code});if(res.ok){alert('&#10003; 2FA aktiviert!');document.getElementById('twoFaSetup').style.display='none';load2FAStatus();}else alert('&#10060; '+res.msg);}
+async function disable2FA(){const pw=document.getElementById('dis2FaPw').value;const res=await api('disable_2fa',{pw});if(res.ok){alert('2FA deaktiviert.');document.getElementById('twoFaDis').style.display='none';load2FAStatus();}else alert('&#10060; '+res.msg);}
+async function loadLoginLog(){const res=await api('get_login_log');if(!res.ok)return;const el=document.getElementById('loginLog');el.innerHTML='';if(!res.log.length){el.innerHTML='<div style="color:var(--muted);font-size:.8rem">Noch keine Einträge</div>';return;}const map={wrong_pw:'Falsches Passwort',wrong_totp:'Falscher 2FA-Code',lockout:'Gesperrt',rate_limit:'Rate Limit',password:'Login OK',totp:'2FA OK',password_changed:'Passwort geändert'};res.log.forEach(e=>{const d=new Date(e.created_at);const t=d.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});el.innerHTML+=`<div class="log-entry"><div class="log-dot ${e.success?'ok':'fail'}"></div><span>${e.success?'&#9989;':'&#10060;'}</span><span style="color:var(--muted)">${map[e.reason]||e.reason}</span><span class="log-time">${t}</span></div>`;});}
 
-// ── Save ───────────────────────────────────────────────
+// &#9472;&#9472; Save &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function saveAll(){
   ['saveBtn','saveBtnD','saveBtnP'].forEach(id=>setBtn(id,true,'Speichern...'));
   const data={slug,name:document.getElementById('editName').value,bio:document.getElementById('editBio').value,emoji:document.getElementById('editEmoji').value,maint:document.getElementById('maintToggle').checked?1:0,maint_text:document.getElementById('maintText').value,og_title:document.getElementById('ogTitle').value,og_desc:document.getElementById('ogDesc').value,color1:document.getElementById('color1').value,color2:document.getElementById('color2').value,font_family:document.getElementById('fontFamily').value,avatar_animated:document.getElementById('avatarAnimated').checked?1:0,bg_particles:document.getElementById('bgParticles').checked?1:0,particle_style:document.getElementById('particleStyle').value,name_animated:document.getElementById('nameAnimated').checked?1:0,page_title:document.getElementById('pageTitle').value,footer_text:document.getElementById('footerTextEdit').value,footer_visible:document.getElementById('footerVisible').checked?1:0,cookie_banner:document.getElementById('cookieBannerToggle').checked?1:0,cookie_text:document.getElementById('cookieTxt').value,lang_enabled:document.getElementById('langEnabled').checked?1:0,
     announce_enabled:document.getElementById('announceEnabled').checked?1:0,
     announce_text:document.getElementById('announceText2').value,
     announce_style:document.getElementById('announceStyle').value,
+    twitch_enabled:document.getElementById('twitchEnabled').checked?1:0,
+    twitch_username:document.getElementById('twitchUsername').value,
+    twitch_client_id:document.getElementById('twitchClientId').value,
+    twitch_client_secret:document.getElementById('twitchClientSecret').value,
+    milestone_enabled:document.getElementById('milestoneEnabled').checked?1:0,
+    milestone_title:document.getElementById('milestoneTitle').value,
+    milestone_current:parseInt(document.getElementById('milestoneCurrent').value)||0,
+    milestone_target:parseInt(document.getElementById('milestoneTarget').value)||1000,
+    milestone_unit:document.getElementById('milestoneUnit').value,
+    twitch_enabled:document.getElementById('twitchEnabled').checked?1:0,
+    twitch_username:document.getElementById('twitchUsername').value,
+    twitch_client_id:document.getElementById('twitchClientId').value,
+    twitch_client_secret:document.getElementById('twitchClientSecret').value,
+    milestone_enabled:document.getElementById('milestoneEnabled').checked?1:0,
+    milestone_title:document.getElementById('milestoneTitle').value,
+    milestone_current:parseInt(document.getElementById('milestoneCurrent').value)||0,
+    milestone_target:parseInt(document.getElementById('milestoneTarget').value)||1000,
+    milestone_unit:document.getElementById('milestoneUnit').value,
     spotify_enabled:document.getElementById('spotifyEnabled').checked?1:0,
     spotify_client_id:document.getElementById('spotifyClientId').value,
     spotify_client_secret:document.getElementById('spotifyClientSecret').value,
@@ -994,13 +1085,13 @@ async function saveAll(){
     webhook_enabled:document.getElementById('webhookEnabled').checked?1:0,
     webhook_url:document.getElementById('webhookUrl').value,
     avatar_filter:(document.getElementById('avatarFilter')||{value:'filter-none'}).value,ambient_sound:imgs.ambient_sound,logo_url:imgs.logo_url,avatar_url:imgs.avatar_url,bg_image:imgs.bg_image,favicon_url:imgs.favicon_url,links};
-  const res=await api('save_settings',data);['saveBtn','saveBtnD','saveBtnP'].forEach(id=>setBtn(id,false,'✓ Speichern'));
+  const res=await api('save_settings',data);['saveBtn','saveBtnD','saveBtnP'].forEach(id=>setBtn(id,false,'&#10003; Speichern'));
   if(res.ok){await loadPublic(slug);closeEdit();}
 }
 
-// ── Stats ──────────────────────────────────────────────
+// &#9472;&#9472; Stats &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function loadStats(){loadDeviceStats();
-  ['stV','stT','stC'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='…';});
+  ['stV','stT','stC'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='&hellip;';});
   const res=await api('get_stats');if(!res.ok)return;
   document.getElementById('stV').textContent=res.totalVisitors.toLocaleString('de-DE');document.getElementById('stT').textContent=res.todayVisitors.toLocaleString('de-DE');document.getElementById('stC').textContent=res.totalClicks.toLocaleString('de-DE');
   const vc=document.getElementById('visChart');vc.innerHTML='';const mx=Math.max(...(res.visitors||[]).map(v=>v.count),1);(res.visitors||[]).forEach(v=>{const p=Math.round((v.count/mx)*100);vc.innerHTML+=`<div class="bar-col"><div class="bar" style="height:${p}%" title="${v.count}"></div><div class="bar-dt">${v.visit_date.slice(5)}</div></div>`;});
@@ -1016,22 +1107,22 @@ async function loadStats(){loadDeviceStats();
 
 
 
-// ── Unlock ─────────────────────────────────────────────
+// &#9472;&#9472; Unlock &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function openUnlock(idx,label){unlockIdx=idx;document.getElementById('unlockName').textContent=`"${label}" ist passwortgeschützt.`;document.getElementById('unlockCode').value='';document.getElementById('unlockErr').className='err-box';document.getElementById('unlockModal').classList.add('open');setTimeout(()=>document.getElementById('unlockCode').focus(),100);}
 function closeUnlock(){document.getElementById('unlockModal').classList.remove('open');unlockIdx=-1;}
 async function doUnlock(){const code=document.getElementById('unlockCode').value;if(!code)return;const res=await api('unlock_link',{code,slug,idx:unlockIdx});if(res.ok){closeUnlock();window.open(res.url,'_blank','noopener');api('track_click',{label:links[unlockIdx]?.label,url:res.url});}else{const e=document.getElementById('unlockErr');e.textContent=res.msg;e.className='err-box show';}}
 
-// ── Export / Import ────────────────────────────────────
+// &#9472;&#9472; Export / Import &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function doExport(){const res=await api('export_backup');if(!res.ok){alert('Fehler: '+res.msg);return;}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(res.data,null,2)],{type:'application/json'}));a.download='scicel-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
-async function doImport(input){const file=input.files[0];if(!file)return;const msg=document.getElementById('importMsg');msg.style.color='var(--muted)';msg.textContent='⏳ Importiere...';try{const text=await file.text();const data=JSON.parse(text);const res=await api('import_backup',{data});if(res.ok){msg.style.color='var(--success)';msg.textContent='✓ '+res.msg;setTimeout(()=>location.reload(),1500);}else{msg.style.color='var(--danger)';msg.textContent='❌ '+res.msg;}}catch(e){msg.style.color='var(--danger)';msg.textContent='❌ Ungültige JSON-Datei';}}
+async function doImport(input){const file=input.files[0];if(!file)return;const msg=document.getElementById('importMsg');msg.style.color='var(--muted)';msg.textContent='&#9203; Importiere...';try{const text=await file.text();const data=JSON.parse(text);const res=await api('import_backup',{data});if(res.ok){msg.style.color='var(--success)';msg.textContent='&#10003; '+res.msg;setTimeout(()=>location.reload(),1500);}else{msg.style.color='var(--danger)';msg.textContent='&#10060; '+res.msg;}}catch(e){msg.style.color='var(--danger)';msg.textContent='&#10060; Ungültige JSON-Datei';}}
 
-// ── Drag & Drop ────────────────────────────────────────
+// &#9472;&#9472; Drag & Drop &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function renderItems(){
   const c=document.getElementById('editItems');c.innerHTML='';
   links.forEach((l,i)=>{
     const d=document.createElement('div');d.className='edit-item';d.draggable=true;
-    const badgeOpts=['','neu','hot','sale','bald','live'].map(v=>`<option value="${v}" ${l.badge===v?'selected':''}>${v||'— kein Badge'}</option>`).join('');
-    d.innerHTML=`<div class="edit-item-head"><span><span class="drag-h">⠿</span>${l.emoji||'🔗'} Link ${i+1}</span><button class="del-btn" onclick="delLink(${i})">✕</button></div>
+    const badgeOpts=['','neu','hot','sale','bald','live'].map(v=>`<option value="${v}" ${l.badge===v?'selected':''}>${v||'&mdash; kein Badge'}</option>`).join('');
+    d.innerHTML=`<div class="edit-item-head"><span><span class="drag-h">&#10303;</span>${l.emoji||'&#128279;'} Link ${i+1}</span><button class="del-btn" onclick="delLink(${i})">&#10005;</button></div>
     <div class="e-row"><div><label class="lbl">Emoji</label><input class="inp" data-i="${i}" data-f="emoji" value="${l.emoji||''}" style="margin-bottom:0"></div><div><label class="lbl">Name (DE)</label><input class="inp" data-i="${i}" data-f="label" value="${l.label||''}" style="margin-bottom:0"></div></div>
     <div class="e-row" style="margin-top:6px"><div><label class="lbl">Name (EN)</label><input class="inp" data-i="${i}" data-f="label_en" value="${l.label_en||''}" placeholder="English label" style="margin-bottom:0"></div><div><label class="lbl">Icon Farbe</label><input class="inp" data-i="${i}" data-f="color" value="${l.color||''}" style="margin-bottom:0"></div></div>
     <label class="lbl" style="margin-top:8px">URL</label><input class="inp" data-i="${i}" data-f="url" value="${l.url||''}">
@@ -1044,18 +1135,18 @@ function renderItems(){
       <div><label class="lbl">Ablaufdatum</label><input type="date" class="inp" data-i="${i}" data-f="expires" value="${l.expires||''}" style="margin-bottom:0"></div>
     </div>
     <div class="e-row" style="margin-top:6px">
-      <div><label class="lbl">Thumbnail Bild</label><div class="upload-zone" style="padding:8px;font-size:.75rem" onclick="document.getElementById('thumb_${i}').click()"><input type="file" id="thumb_${i}" accept="image/*" onchange="uploadThumb(this,${i})">🖼️ Bild hochladen</div>${l.thumb?`<img src="${l.thumb}" style="height:40px;border-radius:4px;margin-top:4px;object-fit:cover">`:''}</div>
+      <div><label class="lbl">Thumbnail Bild</label><div class="upload-zone" style="padding:8px;font-size:.75rem" onclick="document.getElementById('thumb_${i}').click()"><input type="file" id="thumb_${i}" accept="image/*" onchange="uploadThumb(this,${i})">&#128444; Bild hochladen</div>${l.thumb?`<img src="${l.thumb}" style="height:40px;border-radius:4px;margin-top:4px;object-fit:cover">`:''}</div>
       <div><label class="lbl">Video einbetten</label><input class="inp" data-i="${i}" data-f="video" value="${l.video||''}" placeholder="YouTube/Twitch URL" style="margin-bottom:8px">
       <label class="lbl">A/B Test</label><select class="inp" data-i="${i}" data-f="ab_variant" style="margin-bottom:0">
-        <option value="" ${!l.ab_variant?'selected':''}>— kein A/B Test</option>
+        <option value="" ${!l.ab_variant?'selected':''}>&mdash; kein A/B Test</option>
         <option value="ab" ${l.ab_variant==='ab'?'selected':''}>A/B zufällig wechseln</option>
       </select></div>
     </div>
     <label class="lbl" style="margin-top:6px">A/B Test: Zweites Label (Variante B)</label><input class="inp" data-i="${i}" data-f="ab_label" value="${l.ab_label||''}" placeholder="Alternative Bezeichnung für Variante B"
-    <label class="lbl" style="margin-top:6px">🌍 Geo-Block (Länder sperren, kommagetrennt z.B. US,GB)</label><input class="inp" data-i="${i}" data-f="geo_block" value="${l.geo_block||''}" placeholder="leer = überall sichtbar" style="margin-bottom:6px">
+    <label class="lbl" style="margin-top:6px">&#127757; Geo-Block (Länder sperren, kommagetrennt z.B. US,GB)</label><input class="inp" data-i="${i}" data-f="geo_block" value="${l.geo_block||''}" placeholder="leer = überall sichtbar" style="margin-bottom:6px">
     <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:4px">
-      <label class="chk-lbl"><input type="checkbox" data-i="${i}" data-f="protected" ${l.protected?'checked':''}> 🔒 Passwortschutz</label>
-      <label class="chk-lbl"><input type="checkbox" data-i="${i}" data-f="reactions_enabled" ${l.reactions_enabled!==false&&l.reactions_enabled!==0?'checked':''}> ❤️ Reaktionen anzeigen</label>
+      <label class="chk-lbl"><input type="checkbox" data-i="${i}" data-f="protected" ${l.protected?'checked':''}> &#128274; Passwortschutz</label>
+      <label class="chk-lbl"><input type="checkbox" data-i="${i}" data-f="reactions_enabled" ${l.reactions_enabled!==false&&l.reactions_enabled!==0?'checked':''}> &#10084; Reaktionen anzeigen</label>
     </div>
     <input type="password" class="inp" data-i="${i}" data-f="pw_plain" placeholder="Code setzen..." style="margin-bottom:0;${l.protected?'':'opacity:.4'}">`;
     d.addEventListener('dragstart',()=>{dragIdx=i;d.classList.add('dragging');});
@@ -1068,16 +1159,16 @@ function renderItems(){
   c.querySelectorAll('.inp,input[type=checkbox],input[type=date],input[type=datetime-local],select').forEach(inp=>{inp.addEventListener('input',()=>{const i=+inp.dataset.i;if(isNaN(i)||!inp.dataset.f)return;if(inp.type==='checkbox'){links[i][inp.dataset.f]=inp.checked;const pw=inp.closest('.edit-item')?.querySelector('input[data-f="pw_plain"]');if(pw)pw.style.opacity=inp.checked?'1':'.4';}else links[i][inp.dataset.f]=inp.value;});});
 }
 async function uploadThumb(input,idx){const file=input.files[0];if(!file)return;const fd=new FormData();fd.append('image',file);fd.append('action','upload_image');fd.append('type','thumb');try{const r=await fetch(API,{method:'POST',body:fd});const res=await r.json();if(res.ok){links[idx].thumb=res.url;renderItems();}else alert('Upload fehlgeschlagen: '+res.msg);}catch(e){alert('Fehler');}}
-function addLink(){links.push({emoji:'🔗',label:'Neuer Link',label_en:'New Link',url:'https://',color:'rgba(255,255,255,0.08)',protected:false,expires:'',starts:'',badge:'',video:'',thumb:'',countdown:'',ab_variant:'',ab_label:'',geo_block:'',reactions_enabled:true});renderItems();}
+function addLink(){links.push({emoji:'&#128279;',label:'Neuer Link',label_en:'New Link',url:'https://',color:'rgba(255,255,255,0.08)',protected:false,expires:'',starts:'',badge:'',video:'',thumb:'',countdown:'',ab_variant:'',ab_label:'',geo_block:'',reactions_enabled:true});renderItems();}
 function delLink(i){links.splice(i,1);renderItems();}
 
-// ── Tab Switch ─────────────────────────────────────────
+// &#9472;&#9472; Tab Switch &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function switchTab(id,btn){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');
   if(id==='stats')loadStats();if(id==='security'){loadLoginLog();load2FAStatus();loadBlacklist();loadActivityLog();}if(id==='themes')renderThemeGrid();
 }
 
-// ── Render Public ──────────────────────────────────────
+// &#9472;&#9472; Render Public &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function render(data){
   applyColors(data.color1||'#00e5ff',data.color2||'#7b5cff');applyFont(data.fontFamily||'DM Sans');
   document.title=data.pageTitle||data.name||'Scicel Media';
@@ -1111,7 +1202,7 @@ function render(data){
   else{ne.className='name';ne.innerHTML=data.name||'Scicel Media';}
   const inn=document.getElementById('avatarInner');inn.innerHTML='';
   if(data.avatarUrl){const img=document.createElement('img');img.src=data.avatarUrl;inn.appendChild(img);inn.classList.toggle('animated',!!data.avatarAnimated);}
-  else{inn.textContent=data.emoji||'🎬';inn.classList.remove('animated');}
+  else{inn.textContent=data.emoji||'&#127916;';inn.classList.remove('animated');}
   const logo=document.getElementById('siteLogo');if(data.logoUrl){logo.src=data.logoUrl;logo.classList.add('show');}else{logo.src='';logo.classList.remove('show');}
   const bg=document.getElementById('bgLayer');if(data.bgImage){bg.style.backgroundImage=`url(${data.bgImage})`;bg.classList.add('on');}else{bg.style.backgroundImage='';bg.classList.remove('on');}
   if(data.bgParticles)initParticles(data.particleStyle||'stars');else stopParticles();
@@ -1119,7 +1210,7 @@ function render(data){
   document.getElementById('pageFooter').style.display=data.footerVisible===false?'none':'';
   langEnabled=!!data.langEnabled;
   pub_webhook_url=data.webhookUrl||'';pub_webhook_enabled=!!(data.webhookEnabled&&data.webhookUrl);
-  legalData={name:data.impName||'',address:data.impAddress||'',email:data.impEmail||'',phone:data.impPhone||'',vat:data.impVat||'',extra:data.impExtra||''};const lt=document.getElementById('langToggle');if(langEnabled){lt.classList.add('show');lt.textContent=currentLang==='de'?'🌐 EN':'🌐 DE';}else{lt.classList.remove('show');}
+  legalData={name:data.impName||'',address:data.impAddress||'',email:data.impEmail||'',phone:data.impPhone||'',vat:data.impVat||'',extra:data.impExtra||''};const lt=document.getElementById('langToggle');if(langEnabled){lt.classList.add('show');lt.textContent=currentLang==='de'?'&#127760; EN':'&#127760; DE';}else{lt.classList.remove('show');}
   // PWA
   const m={name:data.name||'Scicel Media',short_name:data.name||'Scicel',start_url:'./',display:'standalone',background_color:'#07090e',theme_color:data.color1||'#00e5ff',icons:data.faviconUrl?[{src:data.faviconUrl,sizes:'192x192',type:'image/png'}]:[]};
   document.getElementById('pwaManifest').href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
@@ -1134,10 +1225,10 @@ function render(data){
     const embed=getVideoEmbed(l.video||'');
     const div=document.createElement('div');div.className='link-btn';div.style.animationDelay=(i*.07)+'s';
     // Countdown
-    const cdHtml=l.countdown?`<div class="link-countdown" data-countdown="${l.countdown}">⏱</div>`:'';
+    const cdHtml=l.countdown?`<div class="link-countdown" data-countdown="${l.countdown}">&#9201;</div>`:'';
     // Thumbnail
     const thumbHtml=l.thumb&&!embed?`<img class="link-thumb" src="${l.thumb}" alt="" loading="lazy">`:'' ;
-    div.innerHTML=`<div class="link-btn-inner">${mkIcon(l)}<div class="link-body"><span class="link-label">${displayLabel}</span>${cdHtml}</div><div class="link-meta">${l.ab_variant?`<span class="ab-label">${l.ab_variant==='b'?'B':'A'}</span>`:''} ${mkBadge(l.badge)}<span class="click-count" id="clk_${i}" style="font-size:.72rem">— Klicks</span>${l.protected?'<span style="opacity:.6">🔒</span>':''}<span class="link-arrow">→</span></div></div>${thumbHtml}${embed}`;
+    div.innerHTML=`<div class="link-btn-inner">${mkIcon(l)}<div class="link-body"><span class="link-label">${displayLabel}</span>${cdHtml}</div><div class="link-meta">${l.ab_variant?`<span class="ab-label">${l.ab_variant==='b'?'B':'A'}</span>`:''} ${mkBadge(l.badge)}<span class="click-count" id="clk_${i}" style="font-size:.72rem">&mdash; Klicks</span>${l.protected?'<span style="opacity:.6">&#128274;</span>':''}<span class="link-arrow">&#8594;</span></div></div>${thumbHtml}${embed}`;
     div.onclick=(e)=>{if(e.target.closest('iframe')||e.target.closest('.link-thumb')===null&&e.target.tagName==='IMG')return;handleClick(l,i,l.ab_variant);};
     ll.appendChild(div);
   });
@@ -1152,6 +1243,10 @@ function render(data){
   if(data.announceEnabled&&data.announceText){showAnnounce(data.announceText,data.announceStyle||'accent',data.announceVersion||'1');}
   else{const el=document.getElementById('announceBanner');if(el)el.classList.remove('show');}
   // Spotify
+  // Twitch Live Status
+  if(data.twitchEnabled&&data.twitchUsername){checkTwitchLive(slug);}
+  // Milestone
+  if(data.milestoneEnabled){showMilestone(data);}
   if(data.spotifyEnabled){loadSpotify(slug);}
   else{const sc=document.getElementById('spotifyCard');if(sc)sc.classList.remove('show');}
 }
@@ -1196,26 +1291,26 @@ function trackUTM(){const p=new URLSearchParams(location.search);const src=p.get
 
 
 
-// ── IP Blacklist ───────────────────────────────────────
+// &#9472;&#9472; IP Blacklist &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function loadBlacklist(){
   const el=document.getElementById('blacklistEntries');if(!el)return;
   const res=await api('get_blacklist');
   if(!res.ok||!res.list.length){el.innerHTML='<div style="color:var(--muted);padding:6px 0">Keine gesperrten IPs</div>';return;}
-  el.innerHTML=res.list.map(e=>`<div class="log-entry"><div class="log-dot fail"></div><span style="font-family:monospace;font-size:.72rem">${e.ip_hash.slice(0,16)}…</span><span style="color:var(--muted)">${e.reason}</span><button onclick="removeBan(${e.id})" style="margin-left:auto;background:none;border:1px solid rgba(255,68,68,.3);color:var(--danger);border-radius:4px;padding:2px 8px;font-size:.72rem;cursor:pointer;font-family:var(--font)">✕</button></div>`).join('');
+  el.innerHTML=res.list.map(e=>`<div class="log-entry"><div class="log-dot fail"></div><span style="font-family:monospace;font-size:.72rem">${e.ip_hash.slice(0,16)}&hellip;</span><span style="color:var(--muted)">${e.reason}</span><button onclick="removeBan(${e.id})" style="margin-left:auto;background:none;border:1px solid rgba(255,68,68,.3);color:var(--danger);border-radius:4px;padding:2px 8px;font-size:.72rem;cursor:pointer;font-family:var(--font)">&#10005;</button></div>`).join('');
 }
 async function addBan(){
   const ip=document.getElementById('banIp').value.trim();const reason=document.getElementById('banReason').value.trim()||'Manual ban';
   if(!ip){alert('IP-Adresse eingeben');return;}
   const res=await api('add_blacklist',{ip,reason});
   if(res.ok){document.getElementById('banIp').value='';document.getElementById('banReason').value='';loadBlacklist();}
-  else alert('❌ '+res.msg);
+  else alert('&#10060; '+res.msg);
 }
 async function removeBan(id){
   await api('remove_blacklist',{id});loadBlacklist();
 }
 
 
-// ── Live Visitor Counter ───────────────────────────────
+// &#9472;&#9472; Live Visitor Counter &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let liveInterval=null;
 function startHeartbeat(s){
   clearInterval(liveInterval);
@@ -1231,7 +1326,7 @@ function startHeartbeat(s){
   beat();liveInterval=setInterval(beat,30000);
 }
 
-// ── Reactions ─────────────────────────────────────────
+// &#9472;&#9472; Reactions &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let myReactions={};
 async function loadReactions(s){
   const res=await api('get_reactions',{slug:s});if(!res.ok)return;
@@ -1243,7 +1338,7 @@ async function loadReactions(s){
   // Render reaction bars
   document.querySelectorAll('.react-bar').forEach(bar=>{
     const lbl=bar.dataset.label;if(!lbl)return;const rxs=map[lbl]||{};
-    bar.innerHTML=['🔥','❤️','😂','🎉','💯'].map(e=>{
+    bar.innerHTML=['&#128293;','&#10084;','&#128514;','&#127881;','&#128175;'].map(e=>{
       const cnt=rxs[e]||0;const mine=myReactions[lbl]?.[e];
       return`<button class="react-btn${mine?' reacted':''}" onclick="toggleReact('${lbl}','${e}',this)"><span>${e}</span>${cnt>0?`<span class="react-count">${cnt}</span>`:''}</button>`;
     }).join('');
@@ -1262,44 +1357,44 @@ function addReactionBars(){
     if(l.reactions_enabled===false||l.reactions_enabled===0||l.reactions_enabled==='0')return;
     const lbl=l.label;
     const bar=document.createElement('div');bar.className='react-bar';bar.dataset.label=lbl;
-    bar.innerHTML=['🔥','❤️','😂','🎉','💯'].map(e=>`<button class="react-btn" onclick="toggleReact('${lbl}','${e}',this)"><span>${e}</span></button>`).join('');
+    bar.innerHTML=['&#128293;','&#10084;','&#128514;','&#127881;','&#128175;'].map(e=>`<button class="react-btn" onclick="toggleReact('${lbl}','${e}',this)"><span>${e}</span></button>`).join('');
     const inner=btn.querySelector('.link-btn-inner');if(inner)inner.after(bar);else btn.appendChild(bar);
   });
 }
 
-// ── Device & Hour Stats ────────────────────────────────
+// &#9472;&#9472; Device & Hour Stats &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function loadDeviceStats(){
   const res=await api('get_device_stats');if(!res.ok)return;
   // Devices
   const dc=document.getElementById('deviceChart');if(dc){
     if(!res.devices.length){dc.innerHTML='<div style="color:var(--muted);font-size:.8rem">Noch keine Daten</div>';}
-    else{const icons={mobile:'📱',tablet:'📟',desktop:'🖥️'};const total=res.devices.reduce((s,d)=>s+(+d.total),0);
-    dc.innerHTML=res.devices.map(d=>{const pct=Math.round(+d.total/total*100);return`<div class="click-row"><span class="click-lbl">${icons[d.device_type]||'💻'} ${d.device_type}</span><div class="click-bar-w"><div class="click-bar" style="width:${pct}%"></div></div><span class="click-n">${pct}%</span></div>`;}).join('');}
+    else{const icons={mobile:'&#128241;',tablet:'&#128223;',desktop:'&#128421;'};const total=res.devices.reduce((s,d)=>s+(+d.total),0);
+    dc.innerHTML=res.devices.map(d=>{const pct=Math.round(+d.total/total*100);return`<div class="click-row"><span class="click-lbl">${icons[d.device_type]||'&#128187;'} ${d.device_type}</span><div class="click-bar-w"><div class="click-bar" style="width:${pct}%"></div></div><span class="click-n">${pct}%</span></div>`;}).join('');}
   }
   // Hours heatmap
   const hc=document.getElementById('hourChart');if(hc&&res.hours.length){
     const maxH=Math.max(...res.hours.map(h=>+h.total),1);
     const allH=Array.from({length:24},(_,i)=>({hour:i,total:+(res.hours.find(h=>+h.hour===i)?.total||0)}));
     hc.innerHTML='<div style="font-size:.7rem;color:var(--muted);margin-bottom:6px;letter-spacing:.05em">TAGESZEIT</div><div style="display:flex;gap:2px;align-items:flex-end;height:40px">'+
-    allH.map(h=>{const pct=Math.round(h.total/maxH*100);const isNow=new Date().getHours()===h.hour;return`<div style="flex:1;background:${isNow?'var(--accent)':'rgba(0,229,255,.25)'};height:${Math.max(pct,4)}%;border-radius:2px 2px 0 0;min-height:3px" title="${h.hour}:00 — ${h.total} Besucher"></div>`;}).join('')+'</div><div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--muted);margin-top:3px"><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span></div>';
+    allH.map(h=>{const pct=Math.round(h.total/maxH*100);const isNow=new Date().getHours()===h.hour;return`<div style="flex:1;background:${isNow?'var(--accent)':'rgba(0,229,255,.25)'};height:${Math.max(pct,4)}%;border-radius:2px 2px 0 0;min-height:3px" title="${h.hour}:00 &mdash; ${h.total} Besucher"></div>`;}).join('')+'</div><div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--muted);margin-top:3px"><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span></div>';
   }
   // Countries
   const cc=document.getElementById('countryChart');if(cc){
     if(!res.countries.length){cc.innerHTML='<div style="color:var(--muted);font-size:.8rem">Noch keine Länder-Daten</div>';}
-    else{const maxC=Math.max(...res.countries.map(c=>+c.total),1);cc.innerHTML=res.countries.map(c=>{const pct=Math.round(+c.total/maxC*100);return`<div class="click-row"><span class="click-lbl">🌍 ${c.country||'??'}</span><div class="click-bar-w"><div class="click-bar" style="width:${pct}%"></div></div><span class="click-n">${c.total}</span></div>`;}).join('');}
+    else{const maxC=Math.max(...res.countries.map(c=>+c.total),1);cc.innerHTML=res.countries.map(c=>{const pct=Math.round(+c.total/maxC*100);return`<div class="click-row"><span class="click-lbl">&#127757; ${c.country||'??'}</span><div class="click-bar-w"><div class="click-bar" style="width:${pct}%"></div></div><span class="click-n">${c.total}</span></div>`;}).join('');}
   }
 }
 
-// ── Activity Log ───────────────────────────────────────
+// &#9472;&#9472; Activity Log &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function loadActivityLog(){
   const el=document.getElementById('activityLog');if(!el)return;
   const res=await api('get_activity_log');if(!res.ok){el.innerHTML='<div style="color:var(--muted)">Keine Daten</div>';return;}
   if(!res.log.length){el.innerHTML='<div style="color:var(--muted);font-size:.8rem">Noch keine Aktivitäten</div>';return;}
-  const icons={'save_settings':'💾','login':'🔑','pw_reset_request':'📧','pw_reset_done':'🔑','csrf_fail':'⚠️','honeypot':'🍯','blacklisted':'🚫'};
-  el.innerHTML=res.log.map(e=>{const d=new Date(e.created_at);const t=d.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});return`<div class="log-entry"><span>${icons[e.action]||'📋'}</span><span style="font-size:.78rem">${e.action.replace(/_/g,' ')}</span><span style="color:var(--muted);font-size:.72rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.detail||''}</span><span class="log-time">${t}</span></div>`;}).join('');
+  const icons={'save_settings':'&#128190;','login':'&#128273;','pw_reset_request':'&#128231;','pw_reset_done':'&#128273;','csrf_fail':'&#9888;','honeypot':'&#127855;','blacklisted':'&#128683;'};
+  el.innerHTML=res.log.map(e=>{const d=new Date(e.created_at);const t=d.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});return`<div class="log-entry"><span>${icons[e.action]||'&#128203;'}</span><span style="font-size:.78rem">${e.action.replace(/_/g,' ')}</span><span style="color:var(--muted);font-size:.72rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.detail||''}</span><span class="log-time">${t}</span></div>`;}).join('');
 }
 
-// ── Password Reset (public, via URL token) ────────────
+// &#9472;&#9472; Password Reset (public, via URL token) &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function doReset(){
   const pw=document.getElementById('resetPw').value,pw2=document.getElementById('resetPw2').value;
   const err=document.getElementById('resetErr');
@@ -1311,14 +1406,14 @@ async function doReset(){
   if(res.ok)setTimeout(()=>{document.getElementById('resetModal').classList.remove('open');history.replaceState({},'',location.pathname);},2000);
 }
 
-// ── Track Device + Country ─────────────────────────────
+// &#9472;&#9472; Track Device + Country &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function trackDevice(){
   let country='';
   try{const r=await fetch('https://ipapi.co/country/',{signal:AbortSignal.timeout(2000)});country=await r.text();country=country.trim().slice(0,2);}catch(e){}
   api('track_device',{country});
 }
 
-// ── Geo-block filter ───────────────────────────────────
+// &#9472;&#9472; Geo-block filter &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let visitorCountry='';
 async function getVisitorCountry(){
   if(visitorCountry)return visitorCountry;
@@ -1336,7 +1431,7 @@ async function filterGeoLinks(){
 }
 
 
-// ── Custom Cursor ──────────────────────────────────────
+// &#9472;&#9472; Custom Cursor &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 (function(){
   const dot=document.getElementById('customCursor');
   const ring=document.getElementById('cursorRing');
@@ -1359,7 +1454,7 @@ async function filterGeoLinks(){
   if(window.matchMedia('(hover:none)').matches){document.body.classList.add('no-custom-cursor');}
 })();
 
-// ── Confetti ───────────────────────────────────────────
+// &#9472;&#9472; Confetti &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function launchConfetti(){
   const cv=document.getElementById('confettiCanvas');if(!cv)return;
   cv.width=window.innerWidth;cv.height=window.innerHeight;
@@ -1388,7 +1483,7 @@ function launchConfetti(){
   draw();
 }
 
-// ── Ripple Effect ──────────────────────────────────────
+// &#9472;&#9472; Ripple Effect &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function addRipple(e){
   const btn=e.currentTarget;const rect=btn.getBoundingClientRect();
   const r=document.createElement('span');r.className='ripple';
@@ -1397,7 +1492,7 @@ function addRipple(e){
   setTimeout(()=>r.remove(),650);
 }
 
-// ── 3D Tilt Effect ─────────────────────────────────────
+// &#9472;&#9472; 3D Tilt Effect &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function init3DTilt(){
   document.querySelectorAll('.link-btn').forEach(btn=>{
     // Add shine layer if not present
@@ -1419,7 +1514,7 @@ function init3DTilt(){
   });
 }
 
-// ── Typing Animation for Bio ───────────────────────────
+// &#9472;&#9472; Typing Animation for Bio &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function typeBio(text,el){
   el.textContent='';let i=0;
   const cursor=document.createElement('span');cursor.textContent='|';cursor.style.cssText='animation:badgePulse .7s ease-in-out infinite;color:var(--accent);';el.after(cursor);
@@ -1429,7 +1524,7 @@ function typeBio(text,el){
   },35);
 }
 
-// ── Announcement Banner ────────────────────────────────
+// &#9472;&#9472; Announcement Banner &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 const ANNOUNCE_KEY='ann_closed_v';
 function showAnnounce(text,style,version){
   if(!text)return;
@@ -1456,7 +1551,7 @@ function closeAnnounce(){
   if(el){localStorage.setItem(ANNOUNCE_KEY,el.dataset.version||'1');el.classList.remove('show');}
 }
 
-// ── Spotify Now Playing ────────────────────────────────
+// &#9472;&#9472; Spotify Now Playing &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function loadSpotify(s){
   // Credentials NEVER sent to browser - server-side proxy handles everything
   try{
@@ -1467,15 +1562,15 @@ async function loadSpotify(s){
     const trEl=document.getElementById('spTrack');
     const arEl=document.getElementById('spArtist');
     const img=document.getElementById('spotifyAlbum');
-    if(trEl)trEl.textContent=res.track||'—';
-    if(arEl)arEl.textContent=res.artist||'—';
+    if(trEl)trEl.textContent=res.track||'&mdash;';
+    if(arEl)arEl.textContent=res.artist||'&mdash;';
     if(img&&res.albumArt)img.src=res.albumArt;
     if(card)card.classList.add('show');
     setTimeout(()=>loadSpotify(s||slug),30000);
   }catch(e){}
 }
 
-// ── Visitor Record Badge ───────────────────────────────
+// &#9472;&#9472; Visitor Record Badge &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function checkRecord(currentCount){
   const key='visitor_record';
   const stored=parseInt(localStorage.getItem(key)||'0');
@@ -1493,7 +1588,7 @@ async function checkRecord(currentCount){
   }
 }
 
-// ── Easter Egg (Konami Code) ───────────────────────────
+// &#9472;&#9472; Easter Egg (Konami Code) &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 (function(){
   const code=[38,38,40,40,37,39,37,39,66,65];let pos=0;
   document.addEventListener('keydown',e=>{
@@ -1509,9 +1604,9 @@ async function checkRecord(currentCount){
 })();
 
 const EE_MESSAGES=[
-  {icon:'🎮',title:'Cheat Code aktiviert!',sub:'Du hast den Konami-Code gefunden. GG ez.',color:'#00e5ff'},
-  {icon:'🐉',title:'Here be dragons.',sub:'Niemand sollte das jemals sehen.',color:'#7b5cff'},
-  {icon:'🕹️',title:'↑↑↓↓←→←→ B A',sub:'Klassiker. Respekt.',color:'#ff6432'},
+  {icon:'&#127918;',title:'Cheat Code aktiviert!',sub:'Du hast den Konami-Code gefunden. GG ez.',color:'#00e5ff'},
+  {icon:'&#128009;',title:'Here be dragons.',sub:'Niemand sollte das jemals sehen.',color:'#7b5cff'},
+  {icon:'&#128377;',title:'&#8593;&#8593;&#8595;&#8595;&#8592;&#8594;&#8592;&#8594; B A',sub:'Klassiker. Respekt.',color:'#ff6432'},
 ];
 function triggerEasterEgg(){
   launchConfetti();
@@ -1522,13 +1617,13 @@ function triggerEasterEgg(){
   c.innerHTML=`<div style="font-size:5rem;margin-bottom:1rem;animation:spin 2s linear infinite;display:inline-block">${msg.icon}</div>
   <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:${msg.color};margin-bottom:.5rem">${msg.title}</h2>
   <p style="color:var(--muted);font-size:1rem;margin-bottom:2rem">${msg.sub}</p>
-  <button onclick="closeEasterEgg()" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:none;border-radius:50px;padding:12px 32px;font-family:var(--font);font-weight:700;font-size:1rem;cursor:pointer">Weiter →</button>`;
+  <button onclick="closeEasterEgg()" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:none;border-radius:50px;padding:12px 32px;font-family:var(--font);font-weight:700;font-size:1rem;cursor:pointer">Weiter &#8594;</button>`;
   ee.classList.add('show');
 }
 function closeEasterEgg(){document.getElementById('easterEgg').classList.remove('show');}
 
 
-// ── Splash Screen ──────────────────────────────────────
+// &#9472;&#9472; Splash Screen &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function showSplash(name){
   const n=document.getElementById('splashName');
   if(n&&name){
@@ -1549,7 +1644,7 @@ function hideSplash(){
   setTimeout(()=>{sp.style.display='none';},700); // fully remove after fade
 }
 
-// ── Link URL Preview on Hover ──────────────────────────
+// &#9472;&#9472; Link URL Preview on Hover &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let previewTimer=null;
 function initLinkPreviews(){
   const preview=document.getElementById('linkPreview');
@@ -1568,14 +1663,14 @@ function initLinkPreviews(){
   });
 }
 
-// ── Haptic Feedback (Mobile) ───────────────────────────
+// &#9472;&#9472; Haptic Feedback (Mobile) &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function haptic(style='light'){
   if(!navigator.vibrate)return;
   const patterns={light:[10],medium:[20],heavy:[40],double:[15,50,15]};
   navigator.vibrate(patterns[style]||patterns.light);
 }
 
-// ── Swipe Between Profiles ────────────────────────────
+// &#9472;&#9472; Swipe Between Profiles &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 (function(){
   let sx=0,sy=0,profiles=[];
   document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
@@ -1591,18 +1686,18 @@ function haptic(style='light'){
   },{passive:true});
 })();
 
-// ── Discord Webhook ────────────────────────────────────
+// &#9472;&#9472; Discord Webhook &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 async function sendWebhook(webhookUrl,linkLabel,linkUrl){
   if(!webhookUrl)return;
   try{
     await fetch(webhookUrl,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({embeds:[{title:'🔗 Link geklickt',description:`**${linkLabel}**\n${linkUrl}`,color:0x00e5ff,timestamp:new Date().toISOString(),footer:{text:'Link-in-Bio Analytics'}}]})});
+      body:JSON.stringify({embeds:[{title:'&#128279; Link geklickt',description:`**${linkLabel}**\n${linkUrl}`,color:0x00e5ff,timestamp:new Date().toISOString(),footer:{text:'Link-in-Bio Analytics'}}]})});
     const ping=document.getElementById('webhookPing');
     if(ping){ping.classList.add('show');setTimeout(()=>ping.classList.remove('show'),2500);}
   }catch(e){}
 }
 
-// ── Avatar Filter ──────────────────────────────────────
+// &#9472;&#9472; Avatar Filter &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let currentAvatarFilter='filter-none';
 function setAvatarFilter(filterClass,btn){
   currentAvatarFilter=filterClass;
@@ -1622,7 +1717,7 @@ function applyAvatarFilter(filterClass){
   if(img&&filterClass)img.className=filterClass;
 }
 
-// ── Legal / Impressum / Datenschutz ───────────────────
+// &#9472;&#9472; Legal / Impressum / Datenschutz &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let legalData={impressum:{name:'',address:'',email:'',phone:'',vat:'',extra:''},webhookUrl:'',webhookEnabled:false};
 
 function openLegal(tab){
@@ -1647,8 +1742,8 @@ function switchLegal(type,btn){
   if(type==='impressum'){
     const hasData=d.name||d.address||d.email;
     c.innerHTML=hasData?`
-      <h2>⚖️ Impressum</h2>
-      <h3>Angaben gemäß §5 TMG</h3>
+      <h2>&#9878; Impressum</h2>
+      <h3>Angaben gemäß &sect;5 TMG</h3>
       <p>${d.name||''}</p>
       <p>${(d.address||'').replace(/,/g,'<br>')}</p>
       ${d.email?`<h3>Kontakt</h3><p>E-Mail: <a href="mailto:${d.email}" style="color:var(--accent)">${d.email}</a></p>`:''}
@@ -1657,10 +1752,10 @@ function switchLegal(type,btn){
       ${d.extra?`<h3>Weitere Angaben</h3><p>${d.extra}</p>`:''}
       <h3>Haftungshinweis</h3>
       <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
-    `:`<p style="color:var(--muted);padding:20px 0">Kein Impressum hinterlegt. Bitte im Admin-Panel unter Seite → Impressum ausfüllen.</p>`;
+    `:`<p style="color:var(--muted);padding:20px 0">Kein Impressum hinterlegt. Bitte im Admin-Panel unter Seite &#8594; Impressum ausfüllen.</p>`;
   }else{
     c.innerHTML=`
-      <h2>🔒 Datenschutzerklärung</h2>
+      <h2>&#128274; Datenschutzerklärung</h2>
       <h3>1. Verantwortlicher</h3>
       <p>${d.name||'[Name eintragen]'}, ${d.address||'[Adresse eintragen]'}</p>
       <h3>2. Erhobene Daten</h3>
@@ -1686,7 +1781,49 @@ function switchLegal(type,btn){
 }
 
 
-// ── Update System ───────────────────────────────────
+// &#9472;&#9472; Update System &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+
+// ── Twitch Live Status ───────────────────────────────
+async function checkTwitchLive(s){
+  try{
+    const res=await api('twitch_live',{slug:s||slug});
+    const card=document.getElementById('twitchLive');
+    if(!res||!res.ok||!res.live){if(card)card.classList.remove('show');return;}
+    const el=document.getElementById('liveTitle');
+    const eg=document.getElementById('liveGame');
+    const ev=document.getElementById('liveViewers');
+    if(el)el.textContent=res.title||'Stream läuft...';
+    if(eg)eg.textContent=res.game||'Twitch';
+    if(ev)ev.textContent=res.viewers||0;
+    if(card)card.classList.add('show');
+    setTimeout(()=>checkTwitchLive(s||slug),120000);
+  }catch(e){}
+}
+
+// ── Milestone Fortschrittsbalken ─────────────────────
+function showMilestone(data){
+  const card=document.getElementById('milestoneCard');
+  if(!card)return;
+  const current=parseInt(data.milestoneCurrent)||0;
+  const target=parseInt(data.milestoneTarget)||1000;
+  const unit=data.milestoneUnit||'Member';
+  const title=data.milestoneTitle||('Ziel: '+target+' '+unit);
+  const pct=Math.min(100,Math.round((current/target)*100));
+  const tEl=document.getElementById('msTitle');
+  const cEl=document.getElementById('msCurrent');
+  const gEl=document.getElementById('msTarget');
+  const pEl=document.getElementById('msPercent');
+  const eEl=document.getElementById('msEmoji');
+  if(tEl)tEl.textContent=title;
+  if(cEl)cEl.textContent=current.toLocaleString('de-DE');
+  if(gEl)gEl.textContent=target.toLocaleString('de-DE');
+  if(pEl)pEl.textContent=pct+'%';
+  const emoji=pct>=100?'&#127881; Geschafft!':pct>=75?'&#128293; Fast da!':pct>=50?'&#128200; Auf Kurs!':pct>=25?'&#128640; Weiter so!':'&#127942; Los gehts!';
+  if(eEl)eEl.innerHTML=emoji;
+  setTimeout(()=>{const bar=document.getElementById('msBar');if(bar)bar.style.width=pct+'%';},300);
+  card.classList.add('show');
+}
+
 async function checkUpdate(){
   const btn=document.getElementById('checkUpdateBtn');
   const res=document.getElementById('updateResult');
@@ -1748,7 +1885,7 @@ async function doUpdate(){
   setTimeout(()=>location.reload(true),2500);
 }
 
-// ── Cursor Particle Effect ─────────────────────────────
+// &#9472;&#9472; Cursor Particle Effect &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 (function(){
   const cv=document.getElementById('cursorCanvas');
   if(!cv)return;
@@ -1769,19 +1906,19 @@ async function doUpdate(){
   document.addEventListener('click',e=>{addParticles(e.clientX,e.clientY,10);});
 })();
 
-// ── Scroll Animations ──────────────────────────────────
+// &#9472;&#9472; Scroll Animations &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function initScrollAnim(){
   const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -20px 0px'});
   document.querySelectorAll('.link-btn,.icon-pill').forEach((el,i)=>{el.style.transitionDelay=(i*0.06)+'s';obs.observe(el);});
 }
 
-// ── Avatar Ring Pulse ──────────────────────────────────
+// &#9472;&#9472; Avatar Ring Pulse &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function initAvatarPulse(){
   const ring=document.getElementById('avatarRing');
   if(ring)ring.classList.add('pulse');
 }
 
-// ── Link Glow on Hover ─────────────────────────────────
+// &#9472;&#9472; Link Glow on Hover &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function applyLinkGlows(){
   document.querySelectorAll('.link-btn').forEach((btn,i)=>{
     const l=links[i];if(!l)return;
@@ -1793,7 +1930,7 @@ function applyLinkGlows(){
   });
 }
 
-// ── Session Timeout Warning ────────────────────────────
+// &#9472;&#9472; Session Timeout Warning &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 let sessTimer=null,sessEnd=0;
 function startSessionTimer(minutes=30){
   clearInterval(sessTimer);sessEnd=Date.now()+minutes*60000;
