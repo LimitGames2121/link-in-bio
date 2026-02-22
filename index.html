@@ -814,7 +814,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
           <div>
             <div style="font-size:.78rem;color:var(--muted)">Aktuelle Version</div>
-            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.1.0</div>
+            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.2.0</div>
           </div>
           <button class="sec-btn" id="checkUpdateBtn" onclick="checkUpdate()" style="margin:0;padding:8px 14px;font-size:.78rem">
             &#128270; Nach Updates suchen
@@ -1827,10 +1827,10 @@ function showMilestone(data){
 async function checkUpdate(){
   const btn=document.getElementById('checkUpdateBtn');
   const res=document.getElementById('updateResult');
-  btn.textContent='&#128257; Prüfe...';btn.disabled=true;
+  btn.textContent='Prüfe...';btn.disabled=true;
   res.style.display='none';
   const r=await api('check_update');
-  btn.textContent='&#128270; Nach Updates suchen';btn.disabled=false;
+  btn.textContent='Nach Updates suchen';btn.disabled=false;
   if(!r||!r.ok){
     res.style.display='block';
     res.innerHTML=`<div class="info-box" style="color:var(--danger);border-color:rgba(255,68,68,.3)">&#10060; ${r?.msg||'Fehler beim Prüfen'}</div>`;
