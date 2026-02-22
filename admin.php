@@ -1,14 +1,7 @@
 <?php
-// ═══════════════════════════════════════════════════════════
-// Link-in-Bio — admin.php Template v9.0.0
-// Erstellt von Scicel Media — github.com/scicel-media/link-in-bio
-//
-// SETUP: Trage deine 4 Datenbankwerte unten ein, dann hochladen!
-// Standard-Passwort nach Installation: template2024
-// ═══════════════════════════════════════════════════════════
 ob_start(); // Catch stray output that would break JSON
-// admin.php — Link-in-Bio Backend v9.0.0
-define('APP_VERSION','9.0.0');
+// admin.php — Scicel Media Backend v8 (stable)
+define('APP_VERSION','9.1.0');
 define('UPDATE_URL','https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/'); // ← GitHub Username eintragen!
 define('DB_HOST','DEIN-DB-HOST.your-database.de');
 define('DB_NAME','DEIN_DATENBANKNAME');
@@ -108,7 +101,7 @@ function setupDB(){
     page_title VARCHAR(255) DEFAULT '',footer_text VARCHAR(500) DEFAULT 'Made with Scicel Media',
     footer_visible TINYINT DEFAULT 1,ambient_sound VARCHAR(500) DEFAULT '',lang_enabled TINYINT DEFAULT 0,
     announce_enabled TINYINT DEFAULT 0,announce_text VARCHAR(500) DEFAULT '',announce_style VARCHAR(20) DEFAULT 'accent',
-    spotify_enabled TINYINT DEFAULT 0,spotify_client_id VARCHAR(200) DEFAULT '',
+    twitch_enabled TINYINT DEFAULT 0,twitch_username VARCHAR(100) DEFAULT '',twitch_client_id VARCHAR(200) DEFAULT '',twitch_client_secret VARCHAR(200) DEFAULT '',milestone_enabled TINYINT DEFAULT 0,milestone_title VARCHAR(200) DEFAULT '',milestone_current INT DEFAULT 0,milestone_target INT DEFAULT 1000,milestone_unit VARCHAR(50) DEFAULT 'Member',    spotify_enabled TINYINT DEFAULT 0,spotify_client_id VARCHAR(200) DEFAULT '',
     spotify_client_secret VARCHAR(200) DEFAULT '',spotify_refresh_token VARCHAR(500) DEFAULT '',
     imp_name VARCHAR(200) DEFAULT '',imp_address VARCHAR(300) DEFAULT '',imp_email VARCHAR(200) DEFAULT '',
     imp_phone VARCHAR(50) DEFAULT '',imp_vat VARCHAR(50) DEFAULT '',imp_extra TEXT,
@@ -142,7 +135,7 @@ function setupDB(){
     'imp_name VARCHAR(200) DEFAULT ""','imp_address VARCHAR(300) DEFAULT ""',
     'imp_email VARCHAR(200) DEFAULT ""','imp_phone VARCHAR(50) DEFAULT ""',
     'imp_vat VARCHAR(50) DEFAULT ""','imp_extra TEXT',
-    'webhook_enabled TINYINT DEFAULT 0','webhook_url VARCHAR(500) DEFAULT ""',
+    'twitch_enabled TINYINT DEFAULT 0','twitch_username VARCHAR(100) DEFAULT ""','twitch_client_id VARCHAR(200) DEFAULT ""','twitch_client_secret VARCHAR(200) DEFAULT ""','milestone_enabled TINYINT DEFAULT 0','milestone_title VARCHAR(200) DEFAULT ""','milestone_current INT DEFAULT 0','milestone_target INT DEFAULT 1000','milestone_unit VARCHAR(50) DEFAULT "Member"',    'webhook_enabled TINYINT DEFAULT 0','webhook_url VARCHAR(500) DEFAULT ""',
     'avatar_filter VARCHAR(30) DEFAULT "filter-none"',
   ];
   // Whitelist validation: $col comes from hardcoded array above - no user input
@@ -170,7 +163,7 @@ function saveProfile($slug,$data){
       'bg_image','bg_particles','particle_style','name_animated','og_title','og_desc','page_title','footer_text',
       'footer_visible','ambient_sound','lang_enabled','announce_enabled','announce_text','announce_style',
       'spotify_enabled','spotify_client_id','spotify_client_secret','spotify_refresh_token',
-      'imp_name','imp_address','imp_email','imp_phone','imp_vat','imp_extra',
+      'twitch_enabled','twitch_username','twitch_client_id','twitch_client_secret','milestone_enabled','milestone_title','milestone_current','milestone_target','milestone_unit','imp_name','imp_address','imp_email','imp_phone','imp_vat','imp_extra',
       'webhook_enabled','webhook_url','avatar_filter',
       'maint','maint_text','cookie_banner','cookie_text'];
   $sets=implode(',',array_map(fn($x)=>"`$x`=?",$f));
@@ -314,6 +307,7 @@ case 'get_public':
     'langEnabled'=>(bool)($p['lang_enabled']??0),
     'announceEnabled'=>(bool)($p['announce_enabled']??0),'announceText'=>$p['announce_text']??'',
     'announceStyle'=>$p['announce_style']??'accent','announceVersion'=>md5(($p['announce_text']??'').($p['announce_style']??'')),
+    'twitchEnabled'=>(bool)($p['twitch_enabled']??0),'twitchUsername'=>htmlspecialchars($p['twitch_username']??''),'milestoneEnabled'=>(bool)($p['milestone_enabled']??0),'milestoneTitle'=>htmlspecialchars($p['milestone_title']??''),'milestoneCurrent'=>(int)($p['milestone_current']??0),'milestoneTarget'=>(int)($p['milestone_target']??1000),'milestoneUnit'=>htmlspecialchars($p['milestone_unit']??'Member'),
     'spotifyEnabled'=>(bool)($p['spotify_enabled']??0),'spotifyClientId'=>$p['spotify_client_id']??'',
     'spotifySecret'=>$p['spotify_client_secret']??'','spotifyRefreshToken'=>$p['spotify_refresh_token']??'',
     'impName'=>$p['imp_name']??'','impAddress'=>$p['imp_address']??'','impEmail'=>$p['imp_email']??'',
@@ -478,6 +472,35 @@ case 'upload_audio':
   $fn='audio_'.time().'_'.bin2hex(random_bytes(4)).'.'.$ext;$dir=__DIR__.'/uploads/';if(!is_dir($dir))mkdir($dir,0755,true);
   if(move_uploaded_file($file['tmp_name'],$dir.$fn))echo json_encode(['ok'=>true,'url'=>'uploads/'.$fn]);
   else echo json_encode(['ok'=>false,'msg'=>'Fehler']);break;
+
+
+case 'twitch_live':
+  // Server-side Twitch API proxy - client secret never reaches browser
+  $slug2=htmlspecialchars($body['slug']??'main');
+  $p2=getProfile($slug2);
+  if(!$p2||!$p2['twitch_enabled']||empty($p2['twitch_client_id'])||empty($p2['twitch_client_secret'])||empty($p2['twitch_username'])){
+    echo json_encode(['ok'=>false,'live'=>false]);break;
+  }
+  // Get app access token
+  $ctx=stream_context_create(['http'=>['method'=>'POST','header'=>'Content-Type: application/x-www-form-urlencoded',
+    'content'=>'client_id='.urlencode($p2['twitch_client_id']).'&client_secret='.urlencode($p2['twitch_client_secret']).'&grant_type=client_credentials','timeout'=>5]]);
+  $tokRes=@file_get_contents('https://id.twitch.tv/oauth2/token',false,$ctx);
+  if(!$tokRes){echo json_encode(['ok'=>false,'live'=>false]);break;}
+  $tok=json_decode($tokRes,true);
+  if(empty($tok['access_token'])){echo json_encode(['ok'=>false,'live'=>false]);break;}
+  // Check if stream is live
+  $ctx2=stream_context_create(['http'=>['method'=>'GET',
+    'header'=>'Client-ID: '.$p2['twitch_client_id']."
+Authorization: Bearer ".$tok['access_token'],'timeout'=>5]]);
+  $streamRes=@file_get_contents('https://api.twitch.tv/helix/streams?user_login='.urlencode($p2['twitch_username']),false,$ctx2);
+  if(!$streamRes){echo json_encode(['ok'=>false,'live'=>false]);break;}
+  $stream=json_decode($streamRes,true);
+  if(empty($stream['data'][0])){echo json_encode(['ok'=>true,'live'=>false]);break;}
+  $s=$stream['data'][0];
+  echo json_encode(['ok'=>true,'live'=>true,
+    'title'=>htmlspecialchars($s['title']??''),
+    'game'=>htmlspecialchars($s['game_name']??''),
+    'viewers'=>(int)($s['viewer_count']??0)]);break;
 
 case 'spotify_now_playing':
   // Server-side Spotify proxy - credentials never leave server
