@@ -913,7 +913,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
           <div>
             <div style="font-size:.78rem;color:var(--muted)">Aktuelle Version</div>
-            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.3.0</div>
+            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.3.1</div>
           </div>
           <button class="sec-btn" id="checkUpdateBtn" onclick="checkUpdate()" style="margin:0;padding:8px 14px;font-size:.78rem">
             &#128270; Nach Updates suchen
@@ -939,7 +939,7 @@ async function getCsrf(){
 async function api(a,d={}){
   try{
     // Attach CSRF token to sensitive actions
-    const needsCsrf=['login','verify_totp','save_settings','change_pw','confirm_2fa','disable_2fa','delete_profile','create_profile','import_backup','add_blacklist','remove_blacklist'];
+    const needsCsrf=['login','verify_totp','save_settings','change_pw','confirm_2fa','disable_2fa','delete_profile','create_profile','import_backup','add_blacklist','remove_blacklist','do_update','rollback_update'];
     if(needsCsrf.includes(a)&&!d.csrf){const t=await getCsrf();d={...d,csrf:t};}
     const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:a,...d})});
     return await r.json();
@@ -2099,8 +2099,10 @@ async function doUpdate(){
   const btn=document.getElementById('installBtn');
   if(!btn)return;
   btn.innerHTML='Installiere...';btn.disabled=true;
+  // Get fresh CSRF token first
+  const csrf=await getCsrf();
   // 60 second timeout
-  const updatePromise=api('do_update',{csrf:csrfToken});
+  const updatePromise=api('do_update',{csrf:csrf});
   const timeoutPromise=new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),60000));
   let r;
   try{r=await Promise.race([updatePromise,timeoutPromise]);}
