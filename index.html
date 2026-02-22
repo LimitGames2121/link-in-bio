@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="manifest" href="/manifest.json">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Link in Bio</title>
 <meta property="og:title" content="Link in Bio">
@@ -458,6 +459,30 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
 .cd-num{font-size:1.4rem;font-weight:800;color:var(--accent);display:block;font-variant-numeric:tabular-nums;}
 .cd-text{font-size:.65rem;color:var(--muted);margin-top:2px;}
 .cd-finished{text-align:center;font-size:.85rem;color:var(--accent);font-weight:700;padding:4px 0;}
+
+/* ── Video Feed ───────────────────────────────── */
+#videoFeed{display:none;width:100%;max-width:520px;margin-bottom:14px;position:relative;z-index:1;}
+#videoFeed.show{display:block;}
+.vf-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.vf-title{font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.vf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.vf-item{position:relative;aspect-ratio:9/16;border-radius:10px;overflow:hidden;cursor:pointer;background:#0d0d1a;}
+.vf-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.vf-item:hover img{transform:scale(1.05);}
+.vf-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);}
+.vf-play-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.vf-views{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:.68rem;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.8);}
+
+/* ── Link Ablaufdatum Badge ────────────────────── */
+.link-expires{font-size:.65rem;color:#ffaa00;margin-left:6px;opacity:.8;}
+.link-expired{opacity:.4;pointer-events:none;}
+
+/* ── Admin: Link Suche & Sortierung ───────────── */
+.links-toolbar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.links-search{flex:1;min-width:120px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:.82rem;font-family:var(--font);}
+.links-search:focus{outline:none;border-color:var(--accent);}
+.links-sort{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--muted);font-size:.78rem;font-family:var(--font);cursor:pointer;}
+.links-sort:focus{outline:none;}
 </style>
 </head>
 <body>
@@ -498,7 +523,10 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     </div>
     <div class="sp-bars"><div class="sp-bar"></div><div class="sp-bar"></div><div class="sp-bar"></div><div class="sp-bar"></div></div>
   </div>
-  <div id="twitchLive">
+  <button id="pwaInstallBtn" onclick="installPwa()" style="display:none;align-items:center;gap:8px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:50px;padding:6px 16px;font-size:.75rem;font-weight:700;color:var(--accent);margin-bottom:12px;cursor:pointer;position:relative;z-index:1;width:100%;max-width:520px;justify-content:center;">
+  &#128241; Als App installieren
+</button>
+<div id="twitchLive">
   <div class="live-dot"></div>
   <span class="live-badge-pill">LIVE</span>
   <div class="live-info">
@@ -517,6 +545,12 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     <span id="msPercent">0%</span>
     <span id="msEmoji">&#127942; Ziel erreichen!</span>
   </div>
+</div>
+<div id="videoFeed">
+  <div class="vf-header">
+    <span class="vf-title" id="vfTitle">&#127916; Letzte Videos</span>
+  </div>
+  <div class="vf-grid" id="vfGrid"></div>
 </div>
 <div id="clipCard">
   <div class="clip-header">&#127918; CLIP DER WOCHE</div>
@@ -740,7 +774,22 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
     </div>
     <div class="edit-section">
       <div class="sec-title">&#127925; Spotify Now Playing</div>
-            <!-- Twitch Clip der Woche -->
+            <!-- YouTube/TikTok Video Feed -->
+      <div class="edit-section">
+        <div class="sec-title">&#127916; Video Feed</div>
+        <div class="tog-row"><div class="tog-row-lbl">Video Feed anzeigen<small>Letzte YouTube oder TikTok Videos</small></div><label class="tog"><input type="checkbox" id="videoFeedEnabled"><span class="tog-sl"></span></label></div>
+        <label class="lbl">Plattform</label>
+        <select class="inp" id="videoFeedPlatform" style="cursor:pointer">
+          <option value="youtube">YouTube</option>
+          <option value="tiktok">TikTok</option>
+        </select>
+        <label class="lbl">YouTube Channel ID oder TikTok Username</label>
+        <input class="inp" id="videoFeedChannel" placeholder="z.B. UCxxxxxx oder @limitgames">
+        <label class="lbl">Anzahl Videos (1-6)</label>
+        <input class="inp" id="videoFeedCount" type="number" min="1" max="6" value="3">
+        <div class="info-box">F&uuml;r YouTube: Channel-ID von youtube.com/channel/UC... &bull; F&uuml;r TikTok: Username ohne @</div>
+      </div>
+      <!-- Twitch Clip der Woche -->
       <div class="edit-section">
         <div class="sec-title">&#127918; Clip der Woche</div>
         <div class="tog-row"><div class="tog-row-lbl">Clip anzeigen<small>Zeigt einen Twitch Clip auf deiner Seite</small></div><label class="tog"><input type="checkbox" id="clipEnabled"><span class="tog-sl"></span></label></div>
@@ -913,7 +962,7 @@ body.theme-forest{--bg:#040a06;--card:rgba(50,200,80,.05);--card-hover:rgba(50,2
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
           <div>
             <div style="font-size:.78rem;color:var(--muted)">Aktuelle Version</div>
-            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.3.1</div>
+            <div style="font-size:.95rem;font-weight:700;color:var(--accent)" id="localVersion">v9.4.0</div>
           </div>
           <button class="sec-btn" id="checkUpdateBtn" onclick="checkUpdate()" style="margin:0;padding:8px 14px;font-size:.78rem">
             &#128270; Nach Updates suchen
@@ -1073,6 +1122,10 @@ async function loadIntoEdit(s){
   document.getElementById('announceText2').value=p.announce_text||'';
   document.getElementById('announceStyle').value=p.announce_style||'accent';
   // Clip
+  document.getElementById('videoFeedEnabled').checked=!!p.video_feed_enabled;
+  document.getElementById('videoFeedPlatform').value=p.video_feed_platform||'youtube';
+  document.getElementById('videoFeedChannel').value=p.video_feed_channel||'';
+  document.getElementById('videoFeedCount').value=p.video_feed_count||3;
   document.getElementById('clipEnabled').checked=!!p.clip_enabled;
   document.getElementById('clipUrl').value=p.clip_url||'';
   document.getElementById('clipTitle').value=p.clip_title||'';
@@ -1168,6 +1221,10 @@ async function saveAll(){
     announce_enabled:document.getElementById('announceEnabled').checked?1:0,
     announce_text:document.getElementById('announceText2').value,
     announce_style:document.getElementById('announceStyle').value,
+    video_feed_enabled:document.getElementById('videoFeedEnabled').checked?1:0,
+    video_feed_platform:document.getElementById('videoFeedPlatform').value,
+    video_feed_channel:document.getElementById('videoFeedChannel').value,
+    video_feed_count:parseInt(document.getElementById('videoFeedCount').value)||3,
     clip_enabled:document.getElementById('clipEnabled').checked?1:0,
     clip_url:document.getElementById('clipUrl').value,
     clip_title:document.getElementById('clipTitle').value,
@@ -1386,6 +1443,7 @@ function render(data){
   else{const el=document.getElementById('announceBanner');if(el)el.classList.remove('show');}
   // Spotify
   // Twitch Live Status
+  if(data.videoFeedEnabled&&data.videoFeedChannel){loadVideoFeed(data);}
   if(data.clipEnabled&&data.clipUrl){showClip(data);}
   if(data.statsEnabled&&data.statsValues){showStats(data.statsValues);}
   if(data.countdownEnabled&&data.countdownDate){startCountdown(data);}
@@ -2049,6 +2107,69 @@ function startCountdown(data){
     setTimeout(tick,1000);
   }
   tick();
+}
+
+
+// ── Video Feed (YouTube) ──────────────────────────
+async function loadVideoFeed(data){
+  const feed=document.getElementById('videoFeed');
+  const grid=document.getElementById('vfGrid');
+  const titleEl=document.getElementById('vfTitle');
+  if(!feed||!grid)return;
+  const platform=data.videoFeedPlatform||'youtube';
+  const channel=data.videoFeedChannel||'';
+  const count=Math.min(6,parseInt(data.videoFeedCount)||3);
+  if(titleEl)titleEl.textContent=platform==='tiktok'?'&#127916; TikTok Videos':'&#128255; YouTube Videos';
+  // Fetch via PHP proxy
+  try{
+    const res=await api('video_feed',{platform,channel,count});
+    if(!res||!res.ok||!res.videos||!res.videos.length){return;}
+    grid.innerHTML=res.videos.map(v=>`
+      <div class="vf-item" onclick="window.open('${v.url}','_blank')">
+        <img src="${v.thumb}" alt="${v.title}" loading="lazy">
+        <div class="vf-play"><div class="vf-play-icon">&#9654;</div></div>
+        ${v.views?`<div class="vf-views">${v.views}</div>`:''}
+      </div>`).join('');
+    feed.classList.add('show');
+  }catch(e){}
+}
+
+// ── Links Suche & Sortierung ──────────────────────
+function filterLinks(){
+  const q=(document.getElementById('linksSearch')?.value||'').toLowerCase();
+  document.querySelectorAll('.edit-item').forEach(el=>{
+    const text=el.textContent.toLowerCase();
+    el.style.display=(!q||text.includes(q))?'':'none';
+  });
+}
+function sortLinks(){
+  const sort=document.getElementById('linksSort')?.value||'manual';
+  if(sort==='manual')return;
+  const list=document.getElementById('linksList');
+  if(!list)return;
+  const items=[...list.querySelectorAll('.edit-item')];
+  items.sort((a,b)=>{
+    if(sort==='clicks'){return (parseInt(b.dataset.clicks)||0)-(parseInt(a.dataset.clicks)||0);}
+    if(sort==='name'){return (a.dataset.label||'').localeCompare(b.dataset.label||'');}
+    if(sort==='newest'){return (parseInt(b.dataset.idx)||0)-(parseInt(a.dataset.idx)||0);}
+    return 0;
+  });
+  items.forEach(el=>list.appendChild(el));
+}
+
+// ── PWA Install Prompt ────────────────────────────
+let pwaPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pwaPrompt=e;showPwaBtn();});
+function showPwaBtn(){
+  const btn=document.getElementById('pwaInstallBtn');
+  if(btn)btn.style.display='flex';
+}
+async function installPwa(){
+  if(!pwaPrompt)return;
+  pwaPrompt.prompt();
+  const{outcome}=await pwaPrompt.userChoice;
+  if(outcome==='accepted'){const btn=document.getElementById('pwaInstallBtn');if(btn)btn.style.display='none';}
+  pwaPrompt=null;
 }
 
 async function checkUpdate(){
