@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Link-in-Bio — Installationsanleitung</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#07090e;color:#e8eaf0;min-height:100vh}
+.hero{background:linear-gradient(135deg,#00e5ff15,#7b5cff15);border-bottom:1px solid rgba(255,255,255,.06);padding:3rem 2rem;text-align:center}
+.hero h1{font-size:2.2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem}
+.hero h1 span{background:linear-gradient(135deg,#00e5ff,#7b5cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
+.hero p{color:#8a9ab8;font-size:1rem}
+.container{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+.step{background:#0d1020;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;position:relative}
+.step-num{position:absolute;top:-14px;left:20px;background:linear-gradient(135deg,#00e5ff,#7b5cff);color:#000;font-weight:800;font-size:.8rem;padding:4px 12px;border-radius:50px}
+.step h2{font-size:1.05rem;font-weight:700;margin-bottom:.8rem;margin-top:.3rem}
+.step p,.step li{font-size:.88rem;color:#8a9ab8;line-height:1.75;margin-bottom:.3rem}
+.step ul{padding-left:1.2rem;margin:.5rem 0}
+code{background:#131929;border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:2px 7px;font-size:.82rem;color:#00e5ff;font-family:'Courier New',monospace}
+.code-block{background:#0a0e1a;border:1px solid rgba(0,229,255,.15);border-radius:10px;padding:1rem;margin:.8rem 0;font-family:'Courier New',monospace;font-size:.82rem;color:#cdd;line-height:1.8;overflow-x:auto}
+.code-block .c{color:#4a5568}.code-block .k{color:#00e5ff}.code-block .s{color:#7b5cff}.code-block .v{color:#ffd700}
+.warn{background:rgba(255,170,0,.08);border:1px solid rgba(255,170,0,.2);border-radius:10px;padding:.8rem 1rem;font-size:.83rem;color:#ffaa00;margin:.8rem 0}
+.success{background:rgba(0,229,100,.08);border:1px solid rgba(0,229,100,.2);border-radius:10px;padding:.8rem 1rem;font-size:.83rem;color:#00e564;margin:.8rem 0}
+.info{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:10px;padding:.8rem 1rem;font-size:.83rem;color:#00e5ff;margin:.8rem 0}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:.8rem 0}
+.feature-card{background:#131929;border-radius:10px;padding:.8rem 1rem;font-size:.82rem}
+.feature-card strong{display:block;margin-bottom:.2rem;color:#e8eaf0}
+.feature-card span{color:#8a9ab8}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.83rem}
+th{background:#131929;padding:.6rem .8rem;text-align:left;color:#00e5ff;border-bottom:1px solid rgba(255,255,255,.08)}
+td{padding:.6rem .8rem;border-bottom:1px solid rgba(255,255,255,.04);color:#8a9ab8;vertical-align:top}
+td:first-child{color:#e8eaf0;white-space:nowrap}
+.badge{display:inline-block;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.2);color:#00e5ff;border-radius:20px;padding:2px 10px;font-size:.72rem;font-weight:700;margin-right:4px}
+.badge.purple{background:rgba(123,92,255,.1);border-color:rgba(123,92,255,.2);color:#a78bfa}
+.badge.green{background:rgba(0,229,100,.1);border-color:rgba(0,229,100,.2);color:#00e564}
+.footer-note{text-align:center;color:#3a3f52;font-size:.8rem;padding:2rem;border-top:1px solid rgba(255,255,255,.05);margin-top:2rem}
+h3{font-size:.95rem;font-weight:700;margin:.8rem 0 .4rem;color:#e8eaf0}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Link <span>in Bio</span></h1>
+  <p>Vollständige Installationsanleitung für Hetzner Webhosting</p>
+</div>
+<div class="container">
+
+<!-- SCHRITT 1 -->
+<div class="step">
+  <div class="step-num">Schritt 1</div>
+  <h2>&#128202; Datenbank bei Hetzner erstellen</h2>
+  <ol style="padding-left:1.2rem">
+    <li>Gehe zu <a href="https://konsole.hetzner.com" target="_blank" style="color:#00e5ff">konsole.hetzner.com</a> und logge dich ein</li>
+    <li>Klicke auf <strong style="color:#e8eaf0">Webhosting &#8594; Verwalten</strong></li>
+    <li>Navigiere zu <strong style="color:#e8eaf0">Datenbanken &#8594; Neue Datenbank</strong></li>
+    <li>Erstelle eine neue MySQL-Datenbank und notiere dir:
+      <div class="code-block">
+        <span class="c"># Diese 4 Werte brauchst du im nächsten Schritt</span><br>
+        <span class="k">Host:</span>     <span class="v">xxxxx.your-database.de</span><br>
+        <span class="k">Datenbank:</span> <span class="v">dein_datenbankname</span><br>
+        <span class="k">Benutzer:</span>  <span class="v">dein_datenbankname</span><br>
+        <span class="k">Passwort:</span>  <span class="v">dein_passwort</span>
+      </div>
+    </li>
+  </ol>
+  <div class="info">Die Tabellen werden beim ersten Aufruf der Seite automatisch erstellt &#8212; du musst nichts manuell anlegen.</div>
+</div>
+
+<!-- SCHRITT 2 -->
+<div class="step">
+  <div class="step-num">Schritt 2</div>
+  <h2>&#9998; admin.php konfigurieren</h2>
+  <p>Öffne <code>admin_template.php</code> in einem Texteditor und trage deine 4 Datenbankwerte ein:</p>
+  <div class="code-block">
+    <span class="k">define</span>(<span class="s">'DB_HOST'</span>, <span class="s">'<span class="v">xxxxx.your-database.de</span>'</span>);<br>
+    <span class="k">define</span>(<span class="s">'DB_NAME'</span>, <span class="s">'<span class="v">dein_datenbankname</span>'</span>);<br>
+    <span class="k">define</span>(<span class="s">'DB_USER'</span>, <span class="s">'<span class="v">dein_datenbankname</span>'</span>);<br>
+    <span class="k">define</span>(<span class="s">'DB_PASS'</span>, <span class="s">'<span class="v">dein_passwort</span>'</span>);
+  </div>
+  <p>Speichere die Datei dann als <code>admin.php</code>.</p>
+</div>
+
+<!-- SCHRITT 3 -->
+<div class="step">
+  <div class="step-num">Schritt 3</div>
+  <h2>&#128228; Dateien per FTP hochladen</h2>
+  <p>Verbinde dich mit einem FTP-Programm (z.B. <a href="https://filezilla-project.org" target="_blank" style="color:#00e5ff">FileZilla</a>) mit deinem Hetzner-Server:</p>
+  <div class="code-block">
+    <span class="k">Host:</span>     <span class="v">deinedomain.de</span> oder FTP-Host aus Hetzner<br>
+    <span class="k">Port:</span>     <span class="v">21</span><br>
+    <span class="k">Benutzer/Passwort:</span> <span class="v">aus Hetzner Konsole</span>
+  </div>
+  <p>Lade diese Dateien in den <code>public_html/</code> Ordner hoch:</p>
+  <div class="code-block">
+    public_html/<br>
+    &nbsp;&nbsp;&#9500;&#9472; index.html<br>
+    &nbsp;&nbsp;&#9500;&#9472; admin.php<br>
+    &nbsp;&nbsp;&#9500;&#9472; .htaccess<br>
+    &nbsp;&nbsp;&#9492;&#9472; uploads/&nbsp;&nbsp;<span class="c">&lt;-- leeren Ordner anlegen!</span>
+  </div>
+  <div class="warn">Die <code>.htaccess</code> Datei ist wichtig für UTF-8 Encoding und Sicherheit &#8212; nicht vergessen!</div>
+</div>
+
+<!-- SCHRITT 4 -->
+<div class="step">
+  <div class="step-num">Schritt 4</div>
+  <h2>&#128274; Erster Login & Passwort ändern</h2>
+  <ol style="padding-left:1.2rem">
+    <li>Öffne <code>https://deinedomain.de</code> im Browser &#8594; Tabellen werden automatisch erstellt</li>
+    <li>Klicke auf <strong style="color:#e8eaf0">Admin Login</strong> (unten rechts)</li>
+    <li>Einloggen mit Standard-Passwort: <code>template2024</code></li>
+  </ol>
+  <div class="warn">&#9888; Passwort sofort nach dem ersten Login ändern! Gehe zu <strong>Sicherheit &#8594; Passwort ändern</strong>.</div>
+</div>
+
+<!-- SCHRITT 5 -->
+<div class="step">
+  <div class="step-num">Schritt 5</div>
+  <h2>&#128736; Admin-Panel einrichten</h2>
+  <p>Das Admin-Panel hat 5 Tabs:</p>
+  <div class="feature-grid">
+    <div class="feature-card"><strong>&#128279; Links</strong><span>Links hinzufügen, bearbeiten, sortieren. Badge, Passwortschutz, A/B-Test möglich.</span></div>
+    <div class="feature-card"><strong>&#127912; Design</strong><span>Farben, Schrift, Avatar-Filter, Hintergrundbild, Partikel, Themen wählen.</span></div>
+    <div class="feature-card"><strong>&#128196; Seite</strong><span>Impressum, Datenschutz, Discord Webhook, Wartungsmodus, Spotify, Cookie-Banner.</span></div>
+    <div class="feature-card"><strong>&#128202; Stats</strong><span>Besucher, Klicks, Geräte, Stunden, Länder &#8212; alles DSGVO-konform.</span></div>
+    <div class="feature-card"><strong>&#128274; Sicherheit</strong><span>Passwort ändern, 2FA einrichten, IP-Blacklist, Aktivitätsprotokoll.</span></div>
+  </div>
+</div>
+
+<!-- SCHRITT 6 -->
+<div class="step">
+  <div class="step-num">Schritt 6</div>
+  <h2>&#9878; Impressum & Datenschutz (Pflicht!)</h2>
+  <p>In Deutschland ist ein Impressum für öffentliche Websites gesetzlich vorgeschrieben (TMG §5).</p>
+  <ol style="padding-left:1.2rem">
+    <li>Im Admin-Panel auf <strong style="color:#e8eaf0">Seite &#8594; Impressum</strong></li>
+    <li>Name, Adresse und E-Mail eintragen</li>
+    <li>Speichern &#8594; Impressum und Datenschutz erscheinen automatisch im Footer</li>
+  </ol>
+  <div class="info">Die Datenschutzerklärung wird automatisch aus deinen Angaben generiert und erklärt das DSGVO-konforme Analytics-System.</div>
+</div>
+
+<!-- FEATURES -->
+<div class="step">
+  <div class="step-num">Alle Features</div>
+  <h2>&#10024; Was ist alles drin?</h2>
+  <h3>Public-Seite</h3>
+  <ul>
+    <li>Ladescreen mit Profilname und Fortschrittsbalken</li>
+    <li>Avatar mit 6 Bildfiltern (Original, Neon, Cool, Warm, Mono, Glow)</li>
+    <li>Link-Vorschau beim Hover (zeigt Ziel-URL)</li>
+    <li>Haptic Feedback auf Mobile (Vibration beim Klick)</li>
+    <li>Swipe zwischen Profilen auf Mobile</li>
+    <li>Reaktions-System (Emoji-Votes auf Links)</li>
+    <li>Live-Besucherzähler, Online-Rekord-Badge</li>
+    <li>Spotify Now Playing Karte</li>
+    <li>Ankündigungs-Banner</li>
+    <li>Cookie-Banner (DSGVO)</li>
+    <li>Impressum & Datenschutz Modal</li>
+    <li>Wartungsseite mit eigenem Text</li>
+    <li>Passwortgeschützte Links</li>
+    <li>Link-Badges (NEU, HOT, SALE, BALD, LIVE)</li>
+    <li>A/B-Testing für Links</li>
+    <li>Hintergrundmusik / Ambient Sound</li>
+    <li>Partikel-Effekte, 3D-Tilt, animierter Name</li>
+  </ul>
+  <h3 style="margin-top:1rem">Admin-Panel</h3>
+  <ul>
+    <li>Mehrere Profile pro Installation</li>
+    <li>Drag & Drop Link-Sortierung</li>
+    <li>Bild-Upload (Avatar, Logo, Hintergrund, Favicon)</li>
+    <li>30+ Themes mit Live-Vorschau</li>
+    <li>Discord Webhook bei jedem Link-Klick</li>
+    <li>DSGVO-Analytics ohne externe Dienste</li>
+    <li>2-Faktor-Authentifizierung (TOTP)</li>
+    <li>IP-Blacklist, Auto-Ban nach 10 Fehlversuchen</li>
+    <li>Aktivitätsprotokoll, Login-Log</li>
+    <li>Backup Export/Import</li>
+    <li>Passwort-Reset per Link</li>
+  </ul>
+</div>
+
+<!-- SICHERHEIT -->
+<div class="step">
+  <div class="step-num">Sicherheit</div>
+  <h2>&#128274; Sicherheits-Checkliste</h2>
+  <table>
+    <tr><th>Was</th><th>Status</th></tr>
+    <tr><td>Passwort ändern</td><td>Sofort nach erstem Login!</td></tr>
+    <tr><td>2FA aktivieren</td><td>Admin &#8594; Sicherheit &#8594; 2FA einrichten</td></tr>
+    <tr><td>Impressum ausfüllen</td><td>Admin &#8594; Seite &#8594; Impressum</td></tr>
+    <tr><td>SSL/HTTPS</td><td>Hetzner aktiviert das automatisch</td></tr>
+    <tr><td>.htaccess hochladen</td><td>Pflicht! Aktiviert UTF-8 und Sicherheits-Header</td></tr>
+    <tr><td>uploads/ Ordner</td><td>Muss existieren (leer anlegen)</td></tr>
+  </table>
+  <div class="success">Das System ist mit 34 automatischen Sicherheits-Checks ausgestattet: Prepared Statements, bcrypt-Hashing, CSRF-Schutz, Rate-Limiting, XSS-Schutz und mehr.</div>
+</div>
+
+<!-- TROUBLESHOOTING -->
+<div class="step">
+  <div class="step-num">Hilfe</div>
+  <h2>&#128295; Häufige Probleme</h2>
+  <table>
+    <tr><th>Problem</th><th>Lösung</th></tr>
+    <tr><td>Seite lädt, aber Links fehlen</td><td>PHP-Fehler/Warnungen brechen JSON. Prüfe DB-Zugangsdaten in admin.php</td></tr>
+    <tr><td>Admin-Login funktioniert nicht</td><td>Standard-Passwort: <code>template2024</code> &#8212; Groß-/Kleinschreibung beachten</td></tr>
+    <tr><td>Emojis zeigen ?? an</td><td>.htaccess hochladen, Browser-Cache leeren (Strg+F5)</td></tr>
+    <tr><td>Bearbeiten-Button reagiert nicht</td><td>Cache leeren oder anderen Browser testen</td></tr>
+    <tr><td>Bilder werden nicht hochgeladen</td><td>uploads/ Ordner muss existieren und beschreibbar sein (chmod 755)</td></tr>
+    <tr><td>Spotify funktioniert nicht</td><td>Client Secret muss in Admin &#8594; Seite &#8594; Spotify eingetragen sein</td></tr>
+    <tr><td>Impressum wird nicht gespeichert</td><td>Einmal admin.php neu hochladen (DB-Spalten werden neu erstellt)</td></tr>
+  </table>
+</div>
+
+<!-- TECHNISCH -->
+<div class="step">
+  <div class="step-num">Technik</div>
+  <h2>&#128187; Technische Anforderungen</h2>
+  <ul>
+    <li>PHP 8.0 oder neuer (empfohlen: 8.2+)</li>
+    <li>MySQL 5.7 oder neuer (empfohlen: MariaDB 10.6+)</li>
+    <li>PHP-Erweiterungen: <code>pdo_mysql</code>, <code>json</code>, <code>session</code>, <code>fileinfo</code>, <code>gd</code></li>
+    <li>Schreibrechte auf <code>uploads/</code> Ordner</li>
+    <li>Apache mit <code>mod_rewrite</code> und <code>.htaccess</code> Support (Standard bei Hetzner)</li>
+  </ul>
+</div>
+
+</div>
+<div class="footer-note">Link-in-Bio Template &#8212; Entwickelt von Scicel Media &#8212; Viel Erfolg! &#127881;</div>
+</body>
+</html>
