@@ -1,11 +1,9 @@
 {
-  "version": "9.3.0",
+  "version": "9.3.1",
   "date": "2026-02-22",
   "changelog": [
-    "NEU: Twitch Clip der Woche mit eingebettetem Player",
-    "NEU: Gaming Stats (bis zu 3 eigene Statistiken)",
-    "NEU: Countdown Timer bis zum naechsten Event",
-    "FIX: Update-Button haengt nicht mehr",
-    "FIX: Installieren-Button Text korrigiert"
+    "FIX: Update-Button CSRF Token Fehler behoben",
+    "FIX: Installieren-Button haengt nicht mehr",
+    "FIX: Session Timeout beim Update erhoet"
   ]
 }
