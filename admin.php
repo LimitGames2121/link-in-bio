@@ -1,7 +1,7 @@
 <?php
 ob_start(); // Catch stray output that would break JSON
 // admin.php — Scicel Media Backend v8 (stable)
-define('APP_VERSION','9.3.0');
+define('APP_VERSION','9.3.1');
 define('UPDATE_URL','https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/'); // ← GitHub Username eintragen!
 define('DB_HOST','DEIN-DB-HOST.your-database.de');
 define('DB_NAME','DEIN_DATENBANKNAME');
@@ -20,6 +20,7 @@ header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-i
 ob_start(); // Buffer all output - prevents any PHP warnings from breaking JSON
 session_set_cookie_params(['secure'=>true,'httponly'=>true,'samesite'=>'Strict']);
 session_start();
+if(isset($_SESSION['admin']))ini_set('max_execution_time',120); // Extra time for updates
 // DON'T regenerate on every request - breaks session data including rate limiter
 
 $isUp=!empty($_FILES);
@@ -554,8 +555,9 @@ case 'check_update':
     'changelog'=>$vd['changelog']??[],'releaseDate'=>$vd['date']??'']);break;
 
 case 'do_update':
-  if(!sessOk())die(json_encode(['ok'=>false]));
+  if(!sessOk())die(json_encode(['ok'=>false,'msg'=>'Session abgelaufen. Bitte neu einloggen.']));
   verifyCsrf($body['csrf']??'');
+  set_time_limit(120);
   // Check writable
   $self=__FILE__;$idx=dirname(__FILE__).'/index.html';
   if(!is_writable($self)||!is_writable($idx)){
@@ -573,8 +575,9 @@ case 'do_update':
   }
   $newPhp=curlDownload('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/admin.php');
   $newHtml=curlDownload('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/index.html');
-  if(!$newPhp||!$newHtml||strlen($newPhp)<10000||strlen($newHtml)<50000){
-    echo json_encode(['ok'=>false,'msg'=>'Download fehlgeschlagen. Bitte später erneut versuchen.']);break;
+  $phpLen=$newPhp?strlen($newPhp):0;$htmlLen=$newHtml?strlen($newHtml):0;
+  if(!$newPhp||!$newHtml||$phpLen<10000||$htmlLen<50000){
+    echo json_encode(['ok'=>false,'msg'=>'Download fehlgeschlagen. PHP: '.$phpLen.' bytes, HTML: '.$htmlLen.' bytes. Bitte nochmal versuchen.']);break;
   }
   // Safety: verify downloaded files look valid
   if(strpos($newPhp,'<?php')!==0||strpos($newPhp,'APP_VERSION')===false){
@@ -624,5 +627,22 @@ case 'rollback_update':
   if(!copy($latest,$self)){echo json_encode(['ok'=>false,'msg'=>'Rollback fehlgeschlagen.']);break;}
   logActivity('rollback','Rolled back from backup');
   echo json_encode(['ok'=>true,'msg'=>'Rollback erfolgreich!']);break;
+
+case 'debug_curl':
+  // Public debug endpoint - no auth needed
+  $result=['php_version'=>PHP_VERSION,'curl_enabled'=>function_exists('curl_init')];
+  if(function_exists('curl_init')){
+    $ch=curl_init('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/version.json');
+    curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>8,CURLOPT_USERAGENT=>'PHP/1.0',CURLOPT_SSL_VERIFYPEER=>true]);
+    $r=curl_exec($ch);$err=curl_error($ch);$code=curl_getinfo($ch,CURLINFO_HTTP_CODE);curl_close($ch);
+    $result['curl_http_code']=$code;
+    $result['curl_error']=$err?:null;
+    $result['curl_success']=!$err&&$code==200;
+    $result['response_preview']=substr($r,0,100);
+  }
+  // Also test file_get_contents
+  $fc=@file_get_contents('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/version.json');
+  $result['file_get_contents']=!empty($fc)?'OK':'BLOCKED';
+  echo json_encode($result);break;
 
 default: http_response_code(400);echo json_encode(['ok'=>false,'msg'=>'Unbekannte Aktion']);}
