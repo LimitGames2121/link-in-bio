@@ -1,7 +1,7 @@
 <?php
 ob_start(); // Catch stray output that would break JSON
 // admin.php — Scicel Media Backend v8 (stable)
-define('APP_VERSION','9.1.0');
+define('APP_VERSION','9.2.0');
 define('UPDATE_URL','https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/'); // ← GitHub Username eintragen!
 define('DB_HOST','DEIN-DB-HOST.your-database.de');
 define('DB_NAME','DEIN_DATENBANKNAME');
@@ -533,8 +533,19 @@ Content-Type: application/x-www-form-urlencoded",'content'=>'grant_type=refresh_
 
 case 'check_update':
   if(!sessOk())die(json_encode(['ok'=>false]));
-  $vc=@file_get_contents(UPDATE_URL.'version.json');
-  if(!$vc){echo json_encode(['ok'=>false,'msg'=>'GitHub nicht erreichbar. Netzwerk prüfen.']);break;}
+  // Try GitHub API first (more likely to work), fall back to raw URL
+  // cURL helper - works on Hetzner Webhosting
+  function curlGet($url){
+    if(!function_exists('curl_init'))return false;
+    $ch=curl_init($url);
+    curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>8,
+      CURLOPT_USERAGENT=>'PHP-Updater/1.0',CURLOPT_SSL_VERIFYPEER=>true,
+      CURLOPT_FOLLOWLOCATION=>true]);
+    $r=curl_exec($ch);curl_close($ch);
+    return $r?:false;
+  }
+  $vc=curlGet('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/version.json');
+  if(!$vc){echo json_encode(['ok'=>false,'msg'=>'GitHub nicht erreichbar. cURL auf diesem Server deaktiviert oder Netzwerk blockiert.']);break;}
   $vd=json_decode($vc,true);
   if(!$vd||empty($vd['version'])){echo json_encode(['ok'=>false,'msg'=>'Ungültige Versions-Datei.']);break;}
   $remote=trim($vd['version']);$local=APP_VERSION;
@@ -551,8 +562,17 @@ case 'do_update':
     echo json_encode(['ok'=>false,'msg'=>'Dateien nicht beschreibbar. Bitte Zugriffsrechte prüfen (chmod 644).']);break;
   }
   // Fetch new files
-  $newPhp=@file_get_contents(UPDATE_URL.'admin.php');
-  $newHtml=@file_get_contents(UPDATE_URL.'index.html');
+  function curlDownload($url){
+    if(!function_exists('curl_init'))return false;
+    $ch=curl_init($url);
+    curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>30,
+      CURLOPT_USERAGENT=>'PHP-Updater/1.0',CURLOPT_SSL_VERIFYPEER=>true,
+      CURLOPT_FOLLOWLOCATION=>true]);
+    $r=curl_exec($ch);curl_close($ch);
+    return $r?:false;
+  }
+  $newPhp=curlDownload('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/admin.php');
+  $newHtml=curlDownload('https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/index.html');
   if(!$newPhp||!$newHtml||strlen($newPhp)<10000||strlen($newHtml)<50000){
     echo json_encode(['ok'=>false,'msg'=>'Download fehlgeschlagen. Bitte später erneut versuchen.']);break;
   }
