@@ -1,7 +1,7 @@
 <?php
 ob_start(); // Catch stray output that would break JSON
 // admin.php — Scicel Media Backend v8 (stable)
-define('APP_VERSION','9.3.1');
+define('APP_VERSION','9.4.0');
 define('UPDATE_URL','https://raw.githubusercontent.com/LimitGames2121/link-in-bio/main/'); // ← GitHub Username eintragen!
 define('DB_HOST','DEIN-DB-HOST.your-database.de');
 define('DB_NAME','DEIN_DATENBANKNAME');
@@ -102,7 +102,7 @@ function setupDB(){
     page_title VARCHAR(255) DEFAULT '',footer_text VARCHAR(500) DEFAULT 'Made with Scicel Media',
     footer_visible TINYINT DEFAULT 1,ambient_sound VARCHAR(500) DEFAULT '',lang_enabled TINYINT DEFAULT 0,
     announce_enabled TINYINT DEFAULT 0,announce_text VARCHAR(500) DEFAULT '',announce_style VARCHAR(20) DEFAULT 'accent',
-    clip_enabled TINYINT DEFAULT 0,clip_url VARCHAR(500) DEFAULT '',clip_title VARCHAR(200) DEFAULT '',clip_thumb_url VARCHAR(500) DEFAULT '',stats_enabled TINYINT DEFAULT 0,stats_values TEXT,countdown_enabled TINYINT DEFAULT 0,countdown_label VARCHAR(200) DEFAULT '',countdown_date VARCHAR(50) DEFAULT '',countdown_done VARCHAR(200) DEFAULT '',    twitch_enabled TINYINT DEFAULT 0,twitch_username VARCHAR(100) DEFAULT '',twitch_client_id VARCHAR(200) DEFAULT '',twitch_client_secret VARCHAR(200) DEFAULT '',milestone_enabled TINYINT DEFAULT 0,milestone_title VARCHAR(200) DEFAULT '',milestone_current INT DEFAULT 0,milestone_target INT DEFAULT 1000,milestone_unit VARCHAR(50) DEFAULT 'Member',    spotify_enabled TINYINT DEFAULT 0,spotify_client_id VARCHAR(200) DEFAULT '',
+    video_feed_enabled TINYINT DEFAULT 0,video_feed_platform VARCHAR(20) DEFAULT 'youtube',video_feed_channel VARCHAR(200) DEFAULT '',video_feed_count TINYINT DEFAULT 3,    clip_enabled TINYINT DEFAULT 0,clip_url VARCHAR(500) DEFAULT '',clip_title VARCHAR(200) DEFAULT '',clip_thumb_url VARCHAR(500) DEFAULT '',stats_enabled TINYINT DEFAULT 0,stats_values TEXT,countdown_enabled TINYINT DEFAULT 0,countdown_label VARCHAR(200) DEFAULT '',countdown_date VARCHAR(50) DEFAULT '',countdown_done VARCHAR(200) DEFAULT '',    twitch_enabled TINYINT DEFAULT 0,twitch_username VARCHAR(100) DEFAULT '',twitch_client_id VARCHAR(200) DEFAULT '',twitch_client_secret VARCHAR(200) DEFAULT '',milestone_enabled TINYINT DEFAULT 0,milestone_title VARCHAR(200) DEFAULT '',milestone_current INT DEFAULT 0,milestone_target INT DEFAULT 1000,milestone_unit VARCHAR(50) DEFAULT 'Member',    spotify_enabled TINYINT DEFAULT 0,spotify_client_id VARCHAR(200) DEFAULT '',
     spotify_client_secret VARCHAR(200) DEFAULT '',spotify_refresh_token VARCHAR(500) DEFAULT '',
     imp_name VARCHAR(200) DEFAULT '',imp_address VARCHAR(300) DEFAULT '',imp_email VARCHAR(200) DEFAULT '',
     imp_phone VARCHAR(50) DEFAULT '',imp_vat VARCHAR(50) DEFAULT '',imp_extra TEXT,
@@ -136,7 +136,7 @@ function setupDB(){
     'imp_name VARCHAR(200) DEFAULT ""','imp_address VARCHAR(300) DEFAULT ""',
     'imp_email VARCHAR(200) DEFAULT ""','imp_phone VARCHAR(50) DEFAULT ""',
     'imp_vat VARCHAR(50) DEFAULT ""','imp_extra TEXT',
-    'clip_enabled TINYINT DEFAULT 0','clip_url VARCHAR(500) DEFAULT ""','clip_title VARCHAR(200) DEFAULT ""','clip_thumb_url VARCHAR(500) DEFAULT ""','stats_enabled TINYINT DEFAULT 0','stats_values TEXT','countdown_enabled TINYINT DEFAULT 0','countdown_label VARCHAR(200) DEFAULT ""','countdown_date VARCHAR(50) DEFAULT ""','countdown_done VARCHAR(200) DEFAULT ""',    'twitch_enabled TINYINT DEFAULT 0','twitch_username VARCHAR(100) DEFAULT ""','twitch_client_id VARCHAR(200) DEFAULT ""','twitch_client_secret VARCHAR(200) DEFAULT ""','milestone_enabled TINYINT DEFAULT 0','milestone_title VARCHAR(200) DEFAULT ""','milestone_current INT DEFAULT 0','milestone_target INT DEFAULT 1000','milestone_unit VARCHAR(50) DEFAULT "Member"',    'webhook_enabled TINYINT DEFAULT 0','webhook_url VARCHAR(500) DEFAULT ""',
+    'video_feed_enabled TINYINT DEFAULT 0','video_feed_platform VARCHAR(20) DEFAULT "youtube"','video_feed_channel VARCHAR(200) DEFAULT ""','video_feed_count TINYINT DEFAULT 3',    'clip_enabled TINYINT DEFAULT 0','clip_url VARCHAR(500) DEFAULT ""','clip_title VARCHAR(200) DEFAULT ""','clip_thumb_url VARCHAR(500) DEFAULT ""','stats_enabled TINYINT DEFAULT 0','stats_values TEXT','countdown_enabled TINYINT DEFAULT 0','countdown_label VARCHAR(200) DEFAULT ""','countdown_date VARCHAR(50) DEFAULT ""','countdown_done VARCHAR(200) DEFAULT ""',    'twitch_enabled TINYINT DEFAULT 0','twitch_username VARCHAR(100) DEFAULT ""','twitch_client_id VARCHAR(200) DEFAULT ""','twitch_client_secret VARCHAR(200) DEFAULT ""','milestone_enabled TINYINT DEFAULT 0','milestone_title VARCHAR(200) DEFAULT ""','milestone_current INT DEFAULT 0','milestone_target INT DEFAULT 1000','milestone_unit VARCHAR(50) DEFAULT "Member"',    'webhook_enabled TINYINT DEFAULT 0','webhook_url VARCHAR(500) DEFAULT ""',
     'avatar_filter VARCHAR(30) DEFAULT "filter-none"',
   ];
   // Whitelist validation: $col comes from hardcoded array above - no user input
@@ -164,7 +164,7 @@ function saveProfile($slug,$data){
       'bg_image','bg_particles','particle_style','name_animated','og_title','og_desc','page_title','footer_text',
       'footer_visible','ambient_sound','lang_enabled','announce_enabled','announce_text','announce_style',
       'spotify_enabled','spotify_client_id','spotify_client_secret','spotify_refresh_token',
-      'clip_enabled','clip_url','clip_title','clip_thumb_url','stats_enabled','stats_values','countdown_enabled','countdown_label','countdown_date','countdown_done','twitch_enabled','twitch_username','twitch_client_id','twitch_client_secret','milestone_enabled','milestone_title','milestone_current','milestone_target','milestone_unit','imp_name','imp_address','imp_email','imp_phone','imp_vat','imp_extra',
+      'video_feed_enabled','video_feed_platform','video_feed_channel','video_feed_count','clip_enabled','clip_url','clip_title','clip_thumb_url','stats_enabled','stats_values','countdown_enabled','countdown_label','countdown_date','countdown_done','twitch_enabled','twitch_username','twitch_client_id','twitch_client_secret','milestone_enabled','milestone_title','milestone_current','milestone_target','milestone_unit','imp_name','imp_address','imp_email','imp_phone','imp_vat','imp_extra',
       'webhook_enabled','webhook_url','avatar_filter',
       'maint','maint_text','cookie_banner','cookie_text'];
   $sets=implode(',',array_map(fn($x)=>"`$x`=?",$f));
@@ -308,7 +308,7 @@ case 'get_public':
     'langEnabled'=>(bool)($p['lang_enabled']??0),
     'announceEnabled'=>(bool)($p['announce_enabled']??0),'announceText'=>$p['announce_text']??'',
     'announceStyle'=>$p['announce_style']??'accent','announceVersion'=>md5(($p['announce_text']??'').($p['announce_style']??'')),
-    'clipEnabled'=>(bool)($p['clip_enabled']??0),'clipUrl'=>htmlspecialchars($p['clip_url']??''),'clipTitle'=>htmlspecialchars($p['clip_title']??''),'clipThumbUrl'=>htmlspecialchars($p['clip_thumb_url']??''),'statsEnabled'=>(bool)($p['stats_enabled']??0),'statsValues'=>$p['stats_values']??'[]','countdownEnabled'=>(bool)($p['countdown_enabled']??0),'countdownLabel'=>htmlspecialchars($p['countdown_label']??''),'countdownDate'=>htmlspecialchars($p['countdown_date']??''),'countdownDone'=>htmlspecialchars($p['countdown_done']??''),'twitchEnabled'=>(bool)($p['twitch_enabled']??0),'twitchUsername'=>htmlspecialchars($p['twitch_username']??''),'milestoneEnabled'=>(bool)($p['milestone_enabled']??0),'milestoneTitle'=>htmlspecialchars($p['milestone_title']??''),'milestoneCurrent'=>(int)($p['milestone_current']??0),'milestoneTarget'=>(int)($p['milestone_target']??1000),'milestoneUnit'=>htmlspecialchars($p['milestone_unit']??'Member'),
+    'videoFeedEnabled'=>(bool)($p['video_feed_enabled']??0),'videoFeedPlatform'=>$p['video_feed_platform']??'youtube','videoFeedChannel'=>htmlspecialchars($p['video_feed_channel']??''),'videoFeedCount'=>(int)($p['video_feed_count']??3),'clipEnabled'=>(bool)($p['clip_enabled']??0),'clipUrl'=>htmlspecialchars($p['clip_url']??''),'clipTitle'=>htmlspecialchars($p['clip_title']??''),'clipThumbUrl'=>htmlspecialchars($p['clip_thumb_url']??''),'statsEnabled'=>(bool)($p['stats_enabled']??0),'statsValues'=>$p['stats_values']??'[]','countdownEnabled'=>(bool)($p['countdown_enabled']??0),'countdownLabel'=>htmlspecialchars($p['countdown_label']??''),'countdownDate'=>htmlspecialchars($p['countdown_date']??''),'countdownDone'=>htmlspecialchars($p['countdown_done']??''),'twitchEnabled'=>(bool)($p['twitch_enabled']??0),'twitchUsername'=>htmlspecialchars($p['twitch_username']??''),'milestoneEnabled'=>(bool)($p['milestone_enabled']??0),'milestoneTitle'=>htmlspecialchars($p['milestone_title']??''),'milestoneCurrent'=>(int)($p['milestone_current']??0),'milestoneTarget'=>(int)($p['milestone_target']??1000),'milestoneUnit'=>htmlspecialchars($p['milestone_unit']??'Member'),
     'spotifyEnabled'=>(bool)($p['spotify_enabled']??0),'spotifyClientId'=>$p['spotify_client_id']??'',
     'spotifySecret'=>$p['spotify_client_secret']??'','spotifyRefreshToken'=>$p['spotify_refresh_token']??'',
     'impName'=>$p['imp_name']??'','impAddress'=>$p['imp_address']??'','impEmail'=>$p['imp_email']??'',
@@ -627,6 +627,38 @@ case 'rollback_update':
   if(!copy($latest,$self)){echo json_encode(['ok'=>false,'msg'=>'Rollback fehlgeschlagen.']);break;}
   logActivity('rollback','Rolled back from backup');
   echo json_encode(['ok'=>true,'msg'=>'Rollback erfolgreich!']);break;
+
+
+case 'video_feed':
+  $platform=htmlspecialchars($body['platform']??'youtube');
+  $channel=htmlspecialchars($body['channel']??'');
+  $count=min(6,max(1,(int)($body['count']??3)));
+  if(!$channel){echo json_encode(['ok'=>false]);break;}
+  $videos=[];
+  if($platform==='youtube'){
+    // Use YouTube RSS feed (no API key needed!)
+    $channelId=$channel;
+    // If it's a handle (@name), we can't easily resolve without API - use channel ID directly
+    $rss="https://www.youtube.com/feeds/videos.xml?channel_id={$channelId}";
+    $xml=curlGet($rss);
+    if($xml){
+      $feed=@simplexml_load_string($xml);
+      if($feed){
+        $i=0;
+        foreach($feed->entry as $entry){
+          if($i>=$count)break;
+          $vid=(string)$entry->children('yt',true)->videoId;
+          $title=(string)$entry->title;
+          $thumb="https://img.youtube.com/vi/{$vid}/mqdefault.jpg";
+          $url="https://www.youtube.com/watch?v={$vid}";
+          $views='';
+          $videos[]=['title'=>htmlspecialchars($title),'thumb'=>$thumb,'url'=>$url,'views'=>$views];
+          $i++;
+        }
+      }
+    }
+  }
+  echo json_encode(['ok'=>true,'videos'=>$videos]);break;
 
 case 'debug_curl':
   // Public debug endpoint - no auth needed
