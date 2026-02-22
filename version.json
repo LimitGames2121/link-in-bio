@@ -1,0 +1,20 @@
+{
+  "version": "9.0.0",
+  "date": "2026-02-22",
+  "changelog": [
+    "Ladescreen / Splash Screen beim Öffnen",
+    "Impressum & Datenschutz (DSGVO-konform, auto-generiert)",
+    "Link-Vorschau beim Hover",
+    "Haptic Feedback auf Mobile",
+    "Swipe zwischen Profilen",
+    "Discord Webhook bei Link-Klicks",
+    "Avatar Bildfilter (Neon, Cool, Warm, Mono, Glow)",
+    "Auto-Update System",
+    "iOS Gradient-Text Fix",
+    "Touch-Event Fixes (Bearbeiten-Button)",
+    "Spotify Secret serverseitig (Security Fix)",
+    "CSRF Schutz verstärkt",
+    "XSS Protection verbessert",
+    "UTF-8 .htaccess für Emoji-Fix"
+  ]
+}
